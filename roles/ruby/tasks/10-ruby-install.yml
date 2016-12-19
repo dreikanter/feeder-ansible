@@ -1,0 +1,23 @@
+---
+- name: download ruby-install
+  get_url:
+    url: "https://github.com/postmodern/ruby-install/archive/v{{ ruby_install_version }}.tar.gz"
+    dest: "/tmp/ruby-install.tar.gz"
+
+- name: unpack ruby-install
+  unarchive:
+    src: "/tmp/ruby-install.tar.gz"
+    dest: "/tmp"
+    creates: /tmp/ruby-install-{{ ruby_install_version }}/Makefile
+
+- name: check if ruby-install is already installed
+  stat:
+    path: /usr/local/share/doc/ruby-install-{{ ruby_install_version }}
+  register: ruby_install_path
+
+- name: install ruby-install
+  become: yes
+  when: ruby_install_path.stat.exists == false
+  make:
+    chdir: "/tmp/ruby-install-{{ ruby_install_version }}"
+    target: install

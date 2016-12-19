@@ -1,0 +1,41 @@
+---
+- name: ensure rubies directory exists
+  file:
+    path: "{{ rubies_path }}"
+    state: directory
+    mode: 0755
+    owner: "{{ deploy_user }}"
+    group: "{{ deploy_user }}"
+
+- name: check if ruby is installed
+  stat:
+    path: "{{ ruby_path }}"
+  register: rubies_installed
+
+# - name: load secret variables
+#   include_vars: "ansible-secrets.yml"
+#   when: rubies_installed.stat.isdir is not defined
+#   ignore_errors: yes
+
+# - name: download prebuilt ruby
+#   when: rubies_installed.stat.isdir is not defined and prebuilt_ruby_url is defined
+#   get_url:
+#     url: "{{ prebuilt_ruby_url }}"
+#     dest: "/tmp/prebuilt-ruby-{{ ruby_version }}"
+#   register: prebuilt_download
+
+# - name: unarchive prebuilt binaries
+#   when: prebuilt_download is defined and prebuilt_download|success
+#   unarchive:
+#     src: "/tmp/prebuilt-ruby-{{ ruby_version }}"
+#     dest: "{{ rubies_path }}"
+#   register: prebuilt_install
+
+- name: install ruby from sources
+  command: ruby-install --install-dir {{ ruby_path }} --cleanup ruby {{ ruby_version }}
+  when: (rubies_installed.stat.isdir is not defined) and (prebuilt_install is not defined or prebuilt_install|failed)
+  environment:
+    CONFIGURE_OPTS: --disable-install-rdoc
+
+- name: install bundler
+  command: "{{ ruby_path }}/bin/gem install bundler"

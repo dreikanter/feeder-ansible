@@ -1,0 +1,13 @@
+---
+- name: add redis repository
+  apt_repository:
+    repo: "ppa:chris-lea/redis-server"
+
+- name: install apt packages
+  apt:
+    name: "redis-server"
+    state: "latest"
+    update_cache: yes
+  notify: restart redis
+
+# TODO: Include /etc/redis/redis.d/local.conf to /etc/redis/redis.conf if need to modify default settings

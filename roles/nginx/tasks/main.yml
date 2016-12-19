@@ -1,0 +1,16 @@
+---
+- name: install nginx
+  apt:
+    name: nginx
+    state: latest
+
+- name: disable default config
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted
+    enabled: yes

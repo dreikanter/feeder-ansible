@@ -1,0 +1,39 @@
+---
+- hosts: all
+  become: yes
+  roles:
+    - common
+    - deploy-user
+
+- hosts: db
+  become: yes
+  roles:
+    - postgres
+
+- hosts: redis
+  become: yes
+  roles:
+    - redis
+
+- hosts: elasticsearch
+  become: yes
+  roles:
+    - elasticsearch
+
+- hosts:
+    - app
+    - worker
+  become: yes
+  roles:
+    - nodejs
+
+- hosts:
+    - app
+    - worker
+  roles:
+    - ruby
+
+- hosts: app
+  become: yes
+  roles:
+    - nginx

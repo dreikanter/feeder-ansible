@@ -1,0 +1,50 @@
+---
+- name: create application group
+  group:
+    name: "{{ deploy_group }}"
+
+- name: create application user
+  user:
+    name: "{{ deploy_user }}"
+    group: "{{ deploy_group }}"
+    state: present
+    shell: /bin/bash
+    generate_ssh_key: yes
+
+- name: add authorized deploy keys
+  authorized_key:
+    manage_dir: yes
+    user: "{{ deploy_user }}"
+    key: "{{ lookup('file', item) }}"
+  with_items: '{{ authorized_public_keys }}'
+
+- name: add deploy user to sudoers
+  lineinfile:
+    dest: /etc/sudoers
+    regexp: "{{ deploy_user }} ALL"
+    line: "{{ deploy_user }} ALL=(ALL) NOPASSWD: ALL"
+    state: present
+
+- name: disallow root ssh access
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^PermitRootLogin"
+    line: "PermitRootLogin no"
+    state: present
+  notify: restart sshd
+
+- name: disallow password authentication
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^PasswordAuthentication"
+    line: "PasswordAuthentication no"
+    state: present
+  notify: restart sshd
+
+- name: set bash aliases
+  template:
+    src: "aliases.sh"
+    dest: "/etc/profile.d/aliases.sh"
+    owner: "root"
+    group: "root"
+    mode: 0644

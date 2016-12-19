@@ -1,0 +1,33 @@
+---
+#
+# role: commons
+#
+app_name: myapp
+timezone: UTC
+locale: en_US.UTF-8
+swap_enabled: yes
+swap_file_path: /swapfile
+swap_file_size_kb: 1024
+
+#
+# role:  deploy-user
+#
+deploy_user: deploy
+deploy_group: "{{ deploy_user }}"
+deploy_user_path: "/home/{{ deploy_user }}"
+authorized_public_keys: []
+
+#
+# role: ruby
+#
+ruby_install_version: 0.6.0
+ruby_version: 2.3.3
+rubies_path: "{{ deploy_user_path }}/.rubies"
+ruby_path: "{{ rubies_path }}/{{ ruby_version }}"
+
+#
+# role: nodejs
+#
+nodesource_url: https://deb.nodesource.com/setup_6.x
+
+app_path: "/var/www/{{ app_name }}/current"

@@ -1,0 +1,17 @@
+[db]
+localhost ansible_connection=local
+
+[redis]
+localhost ansible_connection=local
+
+[elasticsearch]
+localhost ansible_connection=local
+
+[app]
+localhost ansible_connection=local
+
+[worker]
+localhost ansible_connection=local
+
+[all:vars]
+deploy_user = vagrant
