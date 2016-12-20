@@ -1,6 +1,12 @@
+[localhost]
+localhost ansible_connection=local
+
 [app]
 2.2.2.2
 2.2.2.3
 
 [worker]
 2.2.2.4
+
+[all:vars]
+git_branch = master

@@ -1,3 +1,6 @@
+[localhost]
+localhost ansible_connection=local
+
 [db]
 localhost ansible_connection=local
 

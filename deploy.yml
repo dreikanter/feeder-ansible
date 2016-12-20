@@ -1,0 +1,35 @@
+---
+- name: build app distro
+  hosts: localhost
+  tasks:
+
+    - name: ensure local source directory is ready
+      file:
+        path: "{{ local_source_path }}"
+        state: directory
+        mode: 0755
+
+    - name: clone or update sources
+      git:
+        repo: "{{ git_url }}"
+        dest: "{{ local_source_path }}"
+        clone: yes
+        update: yes
+        version: "{{ git_branch }}"
+        accept_hostkey: yes
+
+    - name: bundle install
+      bundler:
+        chdir: "{{ local_source_path }}"
+        executable: "{{ bundle }}"
+        deployment_mode: yes
+        exclude_groups:
+          - development
+          - test
+
+    - name: decrypt configuration
+      args:
+        chdir: "{{ local_source_path }}"
+      shell: "{{ bundle }} exec rails secrets:decrypt"
+      environment:
+        SECRETS_VAULT_PRIVATE_KEY: "{{ secrets_vault_private_key_path }}"
