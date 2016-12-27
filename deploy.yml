@@ -3,11 +3,14 @@
   hosts: localhost
   tasks:
 
-    - name: ensure local source directory is ready
+    - name: ensure directories are ready
       file:
-        path: "{{ local_source_path }}"
+        path: "{{ item }}"
         state: directory
         mode: 0755
+      with_items:
+        - "{{ local_source_path }}"
+        - "{{ dist_path }}"
 
     - name: clone or update sources
       git:
@@ -43,19 +46,59 @@
 
     - name: get distribution path
       set_fact:
-        dist_path: "~/tmp/{{ app_name}}-{{ lookup('pipe', 'date -u +%Y%m%d%H%M%S') }}"
+        new_dist_path: "{{dist_path}}/{{ app_name}}-{{ lookup('pipe', 'date -u +%Y%m%d%H%M%S') }}.tar.gz"
 
     - name: create app distribution
       args:
         chdir: "{{ local_source_path }}"
-      shell: "tar --create --exclude=.git --exclude=tmp/* --exclude=log/* -gzip --verbose --file '{{ dist_path }}' ."
+      # TODO: consider using "archive" module after upgrading to Ansible 2.3+
+      shell: "tar --create --exclude=.git --exclude=tmp/* --exclude=log/* --gzip --verbose --file {{ new_dist_path }} ."
 
     - name: get file distribution size
       stat:
-        path: "{{ dist_path }}"
+        path: "{{ new_dist_path }}"
       register: distro
 
     - debug:
         msg: "Distribution size: {{ distro.stat.size }}"
       when: distro is defined and distro.stat is defined
 
+# - name: deploy app distribution
+#   hosts:
+#     - app
+#     - work
+#   tasks:
+
+#     - name: push it to the server
+
+#     - name: unarchive distribution
+
+#     - name: link most recent release to "/var/www/app/current"
+
+#     - name: migrate db (run once)
+#       run_once: true
+
+# - name: app servers
+#   hosts: app
+#   tasks:
+
+#     - name: ensure puma service is enabled
+
+#     - name: restart puma
+
+#     - name: generate .htpasswd for nginx
+#       when: needed
+
+#     - name: generate configuration file from template to sites-available
+
+#     - name: link configuration file to sites-enabled
+
+# - name: worker servers
+#   hosts: worker
+#   tasks:
+
+#     - name: ensure sidekiq service is enabled
+
+#     - name: restart sidekiq
+
+# # - (?) delete old releases which are not linked to "/var/www/app/current"
