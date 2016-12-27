@@ -15,3 +15,4 @@ localhost ansible_connection=local
 
 [all:vars]
 git_branch = master
+rails_env = production

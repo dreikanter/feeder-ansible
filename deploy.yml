@@ -1,5 +1,5 @@
 ---
-- name: build app distro
+- name: build app distribution
   hosts: localhost
   tasks:
 
@@ -33,3 +33,29 @@
       shell: "{{ bundle }} exec rails secrets:decrypt"
       environment:
         SECRETS_VAULT_PRIVATE_KEY: "{{ secrets_vault_private_key_path }}"
+
+    - name: precompile assets
+      args:
+        chdir: "{{ local_source_path }}"
+      local_action: "shell {{ bundle }} exec rails assets:precompile"
+      environment:
+        RAILS_ENV: "{{ rails_env }}"
+
+    - name: get distribution path
+      set_fact:
+        dist_path: "~/tmp/{{ app_name}}-{{ lookup('pipe', 'date -u +%Y%m%d%H%M%S') }}"
+
+    - name: create app distribution
+      args:
+        chdir: "{{ local_source_path }}"
+      shell: "tar --create --exclude=.git --exclude=tmp/* --exclude=log/* -gzip --verbose --file '{{ dist_path }}' ."
+
+    - name: get file distribution size
+      stat:
+        path: "{{ dist_path }}"
+      register: distro
+
+    - debug:
+        msg: "Distribution size: {{ distro.stat.size }}"
+      when: distro is defined and distro.stat is defined
+
