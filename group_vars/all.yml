@@ -21,10 +21,17 @@ authorized_public_keys: []
 
 # role: ruby
 
+rbenv_version: master
 ruby_install_version: 0.6.0
 ruby_version: 2.3.3
-rubies_path: "~/.rubies"
+
+rbenv_repo: "git://github.com/sstephenson/rbenv.git"
+rbenv_root_path: "{{ deploy_user_path }}/.rbenv"
+rubies_path: "{{ rbenv_root_path }}/versions"
 ruby_path: "{{ rubies_path }}/{{ ruby_version }}"
+
+rbenv_bin: '{{ rbenv_root_path }}/bin/rbenv'
+bundle: "{{ rbenv_root_path }}/shims/bundle"
 
 # role: nodejs
 
@@ -47,7 +54,6 @@ secrets_path:  "{{ app_root_path }}/secrets"
 
 local_source_path: "~/tmp/ansible-{{ app_name }}"
 dist_path: "~/tmp"
-bundle: "{{ ruby_path }}/bin/bundle"
 
 # These paths should be common for Vagrant and CI
 secrets_vault_public_key_path: "/{{ app_name }}-secrets/secrets_vault_key.pub"

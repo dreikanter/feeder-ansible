@@ -1,0 +1,11 @@
+---
+- set_fact:
+    prebuilt_ruby_url: "{{ lookup('env', 'prebuilt_ruby_url') }}"
+
+- name: unarchive prebuilt binaries
+  unarchive:
+    src: "{{ prebuilt_ruby_url }}"
+    dest: "{{ rubies_path }}"
+    remote_src: yes
+    owner: "{{ deploy_user }}"
+    group: "{{ deploy_group }}"

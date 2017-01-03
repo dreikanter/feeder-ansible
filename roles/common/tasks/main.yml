@@ -1,10 +1,4 @@
 ---
-- name: install aptitude
-  apt:
-    name: aptitude
-    state: present
-    update_cache: yes
-
 - name: safe upgrade packages
   apt:
     update_cache: yes
@@ -16,4 +10,3 @@
 - include: tools.yml
 
 - include: locale.yml
-

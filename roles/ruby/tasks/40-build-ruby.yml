@@ -1,0 +1,35 @@
+---
+- name: ensure rubies directory exists
+  become: yes
+  become_user: "{{ deploy_user }}"
+  file:
+    path: "{{ rubies_path }}"
+    state: directory
+    mode: 0755
+    owner: "{{ deploy_user }}"
+    group: "{{ deploy_user }}"
+
+- name: check if ruby is installed
+  become: yes
+  become_user: "{{ deploy_user }}"
+  stat:
+    path: "{{ ruby_path }}"
+  register: ruby_installed
+
+- name: install ruby from sources
+  become: yes
+  become_user: "{{ deploy_user }}"
+  shell: ruby-install --install-dir {{ ruby_path }} ruby {{ ruby_version }} -- --disable-install-rdoc
+  when: ruby_installed.stat.isdir is not defined
+
+- name: rehash rbenv
+  become: yes
+  become_user: "{{ deploy_user }}"
+  shell: "{{ rbenv_bin }} global {{ ruby_version }} && {{ rbenv_bin }} rehash"
+
+- name: install bundler
+  become: yes
+  become_user: "{{ deploy_user }}"
+  shell: "{{ rbenv_root_path }}/shims/gem install bundler"
+  args:
+    creates: "{{ rbenv_root_path }}/shims/bundle"

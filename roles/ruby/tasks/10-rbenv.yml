@@ -1,0 +1,31 @@
+---
+- name: install rbenv
+  become: yes
+  become_user: "{{ deploy_user }}"
+  git:
+    repo: "{{ rbenv_repo }}"
+    dest: "{{ rbenv_root_path }}"
+    accept_hostkey: yes
+    version: "{{ rbenv_version }}"
+    clone: yes
+    update: yes
+
+- name: source rbenv bash file in .bashrc
+  become: yes
+  become_user: "{{ deploy_user }}"
+  lineinfile:
+    dest: "{{ deploy_user_path }}/.bashrc"
+    line: "export PATH=\"$HOME/.rbenv/bin:$PATH\"\neval \"$(rbenv init -)\""
+    insertafter: EOF
+    state: present
+    create: yes
+
+- name: gemrc
+  become: yes
+  become_user: "{{ deploy_user }}"
+  copy:
+    src: "gemrc"
+    dest: "{{ deploy_user_path }}/.gemrc"
+    owner: "{{ deploy_user }}"
+    group: "{{ deploy_group }}"
+    mode: 0600

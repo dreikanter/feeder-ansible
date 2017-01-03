@@ -1,0 +1,10 @@
+---
+# - name: make an archived copy
+#   args:
+#     chdir: "{{ rbenv_root_path }}"
+#   shell: "tar --create --gzip --verbose --file rbenv-with-ruby-{{ ruby_version }}.tar.gz ."
+
+# - name: download archived copy
+#   fetch:
+#     src: "{{ deploy_user_path }}"
+#     dest: "/tmp/rbenv-with-ruby-{{ ruby_version }}.tar.gz"
