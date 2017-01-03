@@ -10,3 +10,5 @@
 - include: tools.yml
 
 - include: locale.yml
+
+- include: systemd.yml

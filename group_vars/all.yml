@@ -58,3 +58,7 @@ dist_path: "~/tmp"
 # These paths should be common for Vagrant and CI
 secrets_vault_public_key_path: "/{{ app_name }}-secrets/secrets_vault_key.pub"
 secrets_vault_private_key_path: "/{{ app_name }}-secrets/secrets_vault_key"
+
+systemd_units_path: "{{ deploy_user_path }}/.config/systemd/user"
+puma_service_name: "puma-{{ app_name }}"
+puma_config_file: "{{ app_path }}/config/puma.rb"

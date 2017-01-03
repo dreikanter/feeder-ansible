@@ -1,0 +1,62 @@
+---
+- name: test if linger is enabled
+  become: yes
+  shell: "loginctl show-user {{ deploy_user }}"
+  changed_when: false
+  failed_when: "{{ 'command not found' in systemd_linger_enabled_test.stderr }}"
+  register: systemd_linger_enabled_test
+
+- name: enabled linger
+  become: yes
+  shell: "loginctl enable-linger {{ deploy_user }}"
+  changed_when: true
+  when: "{{ 'Failed' in systemd_linger_enabled_test.stderr }}"
+
+- name: ensure the user units folder exists
+  become: yes
+  become_user: "{{ deploy_user }}"
+  file:
+    path: "{{ systemd_units_path }}"
+    state: directory
+
+- name: create service unit
+  become: yes
+  become_user: "{{ deploy_user }}"
+  template:
+    src: puma.service.j2
+    dest: "{{ systemd_units_path }}/{{ puma_service_name }}.service"
+
+- name: enable unit at boot
+  become: yes
+  become_user: "{{ deploy_user }}"
+  shell: "/bin/bash -lc -- 'systemctl --user enable {{ puma_service_name }}.service'"
+  register: enable_unit_result
+  changed_when: "{{ 'Created' in enable_unit_result.stderr }}"
+
+# # TODO: Lookup for http_basic_auth_* env vars
+# - name: generate .htpasswd
+#   when: (http_basic_auth is defined) and http_basic_auth
+#   htpasswd:
+#     create: yes
+#     state: present
+#     name: "{{ http_basic_auth_name }}"
+#     password: "{{ http_basic_auth_password }}"
+#     path: "{{ app_path }}/config/.htpasswd"
+
+- name: ensure nginx site configuration present
+  template:
+    src: "nginx-site.conf"
+    dest: "/etc/nginx/sites-available/{{ app_name }}"
+    owner: root
+    group: root
+
+- name: ensure nginx site configuration is enabled
+  file:
+    src: "/etc/nginx/sites-available/{{ app_name }}"
+    dest: "/etc/nginx/sites-enabled/{{ app_name }}"
+    state: link
+
+- name: restart nginx
+  service:
+    name: nginx
+    state: reloaded

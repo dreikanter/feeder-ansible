@@ -46,7 +46,8 @@
 
     - name: get distribution path
       set_fact:
-        new_dist_path: "{{dist_path}}/{{ app_name}}-{{ lookup('pipe', 'date -u +%Y%m%d%H%M%S') }}.tar.gz"
+        new_release_name: "{{ app_name}}-{{ lookup('pipe', 'date -u +%Y%m%d%H%M%S') }}"
+        new_dist_path: "{{dist_path}}/{{ new_release_name }}.tar.gz"
 
     - name: create app distribution
       args:
@@ -63,35 +64,46 @@
         msg: "Distribution size: {{ distro.stat.size }}"
       when: distro is defined and distro.stat is defined
 
-# - name: deploy app distribution
-#   hosts:
-#     - app
-#     - work
-#   tasks:
+- name: deploy app distribution
+  hosts:
+    - app
+    - work
+  tasks:
 
-#     - name: push it to the server
+    - name: unarchive distribution
+      unarchive:
+        src: "{{ new_dist_path }}"
+        path: "{{ releases_path }}/{{ new_release_name }}"
+        owner: "{{ deploy_user }}"
+        group: "{{ deploy_group }}"
+        mode: 0644
 
-#     - name: unarchive distribution
+    - name: link most recent release to "/var/www/app/current"
+      file:
+        state: link
+        src: "{{ releases_path }}/{{ new_release_name }}"
+        dest: "{{ app_path }}"
+        force: yes
 
-#     - name: link most recent release to "/var/www/app/current"
+    - name: migrate db (run once)
+      run_once: true
+      args:
+        chdir: "{{ releases_path }}/{{ new_release_name }}"
+      environment:
+        RAILS_ENV: "{{ rails_env }}"
+      shell: "{{ bundle }} exec rails db:migrate --trace"
 
-#     - name: migrate db (run once)
-#       run_once: true
+- name: launch app servers
+  hosts: app
+  become: yes
+  roles:
+    - puma
 
-# - name: app servers
-#   hosts: app
-#   tasks:
-
-#     - name: ensure puma service is enabled
-
-#     - name: restart puma
-
-#     - name: generate .htpasswd for nginx
-#       when: needed
-
-#     - name: generate configuration file from template to sites-available
-
-#     - name: link configuration file to sites-enabled
+- name: launch workers
+  hosts: worker
+  become: yes
+  roles:
+    - sidekiq
 
 # - name: worker servers
 #   hosts: worker
@@ -102,3 +114,4 @@
 #     - name: restart sidekiq
 
 # # - (?) delete old releases which are not linked to "/var/www/app/current"
+# delete local distribution

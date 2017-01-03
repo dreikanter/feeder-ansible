@@ -1,0 +1,11 @@
+[Unit]
+Description=Puma Application Server
+
+[Service]
+WorkingDirectory={{ app_path }}
+ExecStart=/bin/sh -lc '{{ bundle }} exec puma -C {{ puma_config_file }}'
+Restart=always
+TimeoutSec=30
+
+[Install]
+WantedBy=default.target
