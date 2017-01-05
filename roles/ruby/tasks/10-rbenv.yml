@@ -15,10 +15,13 @@
   become_user: "{{ deploy_user }}"
   lineinfile:
     dest: "{{ deploy_user_path }}/.bashrc"
-    line: "export PATH=\"$HOME/.rbenv/bin:$PATH\"\neval \"$(rbenv init -)\""
+    line: "{{ item }}"
     insertafter: EOF
     state: present
     create: yes
+  with_items:
+    - "export PATH=\"$HOME/.rbenv/bin:$PATH\""
+    - "eval \"$(rbenv init -)\""
 
 - name: gemrc
   become: yes
