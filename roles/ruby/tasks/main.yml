@@ -1,4 +1,4 @@
 ---
 - include: 10-rbenv.yml
 - include: 20-ruby-install.yml
-- include: 40-build-ruby.yml
+- include: 30-build-ruby.yml

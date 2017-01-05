@@ -48,3 +48,14 @@
     owner: "root"
     group: "root"
     mode: 0644
+
+- name: test if linger is enabled
+  shell: "loginctl show-user {{ deploy_user }}"
+  changed_when: false
+  failed_when: "{{ 'command not found' in systemd_linger_enabled_test.stderr }}"
+  register: systemd_linger_enabled_test
+
+- name: enabled linger
+  shell: "loginctl enable-linger {{ deploy_user }}"
+  changed_when: true
+  when: "{{ 'Failed' in systemd_linger_enabled_test.stderr }}"

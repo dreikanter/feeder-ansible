@@ -10,6 +10,26 @@
         new_release_path: "{{ releases_path }}/{{ new_release_name }}"
         run_once: true
 
+- name: ensure directories structure exists
+  hosts:
+    - app
+    - work
+  gather_facts: no
+  tasks:
+    - file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ deploy_user }}"
+        group: "{{ deploy_group }}"
+        mode: u=rwX,g=rX,o=rX
+      with_items:
+        - "{{ app_root_path }}"
+        - "{{ shared_path }}"
+        - "{{ logs_path }}"
+        - "{{ pids_path }}"
+        - "{{ sockets_path }}"
+        - "{{ releases_path }}"
+
 - name: build app distribution
   hosts: localhost
   roles:
@@ -22,5 +42,14 @@
   roles:
     - deploy-distribution
 
-- name: launch app server
-- name: launch workers
+- name: launch app servers
+  hosts: app
+  roles:
+    - puma
+
+# - name: launch workers
+#   hosts: worker
+#   roles:
+#     - sidekiq
+
+# TODO: Delete old releases which are not linked to "/var/www/app/current"

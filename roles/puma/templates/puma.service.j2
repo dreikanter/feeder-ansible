@@ -1,11 +1,18 @@
+# {{ ansible_managed }}
+
 [Unit]
-Description=Puma Application Server
+Description=Puma HTTP Server
+After=network.target
+Requires={{ puma_service_name }}.socket
 
 [Service]
+Type=simple
+User={{ deploy_user }}
 WorkingDirectory={{ app_path }}
 ExecStart=/bin/sh -lc '{{ bundle }} exec puma -C {{ puma_config_file }}'
 Restart=always
 TimeoutSec=30
+Environment=PUMA_DEBUG=1
 
 [Install]
-WantedBy=default.target
+WantedBy=multi-user.target
