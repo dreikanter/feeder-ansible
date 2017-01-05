@@ -20,7 +20,25 @@
   become: yes
   become_user: "{{ deploy_user }}"
   shell: ruby-install --install-dir {{ ruby_path }} ruby {{ ruby_version }} -- --disable-install-rdoc
-  when: ruby_installed.stat.isdir is not defined
+  when: (push_ruby_binaries is not defined or not push_ruby_binaries) and (ruby_installed.stat.isdir is not defined)
+
+- name: push prebuilt ruby binaries from local machine
+  become: yes
+  become_user: "{{ deploy_user }}"
+  when: push_ruby_binaries is defined and push_ruby_binaries
+  # and (ruby_installed.stat.isdir is not defined)
+  synchronize:
+    src: "{{ local_ruby_path }}/"
+    dest: "{{ ruby_path }}"
+    mode: push
+    delete: yes
+    archive: no
+    recursive: yes
+    rsync_opts:
+      - "--exclude=.git"
+      - "--exclude=tmp/*"
+      - "--exclude=log/*"
+      - "--quiet"
 
 - name: rehash rbenv
   become: yes
