@@ -1,5 +1,10 @@
 ---
-- hosts: all
+- hosts:
+    - app
+    - worker
+    - db
+    - redis
+    - elasticsearch
   become: yes
   roles:
     - common
@@ -23,17 +28,10 @@
 - hosts:
     - app
     - worker
-  become: yes
   roles:
     - nodejs
-
-- hosts:
-    - app
-    - worker
-  roles:
     - ruby
 
 - hosts: app
-  become: yes
   roles:
     - nginx

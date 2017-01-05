@@ -50,7 +50,6 @@ shared_path:   "{{ app_root_path }}/shared"
 logs_path:     "{{ shared_path }}/log"
 pids_path:     "{{ shared_path }}/pids"
 releases_path: "{{ app_root_path }}/releases"
-secrets_path:  "{{ app_root_path }}/secrets"
 
 local_source_path: "~/tmp/ansible-{{ app_name }}"
 dist_path: "~/tmp"
