@@ -13,3 +13,9 @@ Provision production:
 ```
 ansible-playbook -i inventory/production -vvvv provision.yml
 ```
+
+Deploy to staging:
+
+```
+ansible-playbook -i inventory/staging -vvvv deploy.yml
+```

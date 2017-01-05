@@ -16,7 +16,7 @@
     manage_dir: yes
     user: "{{ deploy_user }}"
     key: "{{ lookup('file', item) }}"
-  with_items: '{{ authorized_public_keys }}'
+  with_items: "{{ authorized_public_keys }}"
 
 - name: add deploy user to sudoers
   lineinfile:

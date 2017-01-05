@@ -43,6 +43,7 @@ nodesource_url: https://deb.nodesource.com/setup_6.x
 
 git_url: "https://github.com/dreikanter/rails-ansible-sample.git"
 git_branch: master
+git_key_file: None
 
 app_root_path: "/var/www/{{ app_name }}"
 app_path:      "{{ app_root_path }}/current"
@@ -51,12 +52,12 @@ logs_path:     "{{ shared_path }}/log"
 pids_path:     "{{ shared_path }}/pids"
 releases_path: "{{ app_root_path }}/releases"
 
-local_source_path: "~/tmp/ansible-{{ app_name }}"
+local_source_path: "~/tmp/repo"
 dist_path: "~/tmp"
 
 # These paths should be common for Vagrant and CI
-secrets_vault_public_key_path: "/{{ app_name }}-secrets/secrets_vault_key.pub"
-secrets_vault_private_key_path: "/{{ app_name }}-secrets/secrets_vault_key"
+secrets_vault_public_key_path: "/secrets/secrets_vault_key.pub"
+secrets_vault_private_key_path: "/secrets/secrets_vault_key"
 
 systemd_units_path: "{{ deploy_user_path }}/.config/systemd/user"
 puma_service_name: "puma-{{ app_name }}"

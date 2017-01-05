@@ -1,117 +1,26 @@
 ---
+- hosts: all
+  gather_facts: no
+  run_once: true
+  tasks:
+    - set_fact:
+        new_release_name: "{{ app_name }}-{{ lookup('pipe', 'date -u +%Y%m%d%H%M%S') }}"
+        run_once: yes
+    - set_fact:
+        new_release_path: "{{ releases_path }}/{{ new_release_name }}"
+        run_once: true
+
 - name: build app distribution
   hosts: localhost
-  tasks:
-
-    - name: ensure directories are ready
-      file:
-        path: "{{ item }}"
-        state: directory
-        mode: 0755
-      with_items:
-        - "{{ local_source_path }}"
-        - "{{ dist_path }}"
-
-    - name: clone or update sources
-      git:
-        repo: "{{ git_url }}"
-        dest: "{{ local_source_path }}"
-        clone: yes
-        update: yes
-        version: "{{ git_branch }}"
-        accept_hostkey: yes
-
-    - name: bundle install
-      bundler:
-        chdir: "{{ local_source_path }}"
-        executable: "{{ bundle }}"
-        deployment_mode: yes
-        exclude_groups:
-          - development
-          - test
-
-    - name: decrypt configuration
-      args:
-        chdir: "{{ local_source_path }}"
-      shell: "{{ bundle }} exec rails secrets:decrypt"
-      environment:
-        SECRETS_VAULT_PRIVATE_KEY: "{{ secrets_vault_private_key_path }}"
-
-    - name: precompile assets
-      args:
-        chdir: "{{ local_source_path }}"
-      local_action: "shell {{ bundle }} exec rails assets:precompile"
-      environment:
-        RAILS_ENV: "{{ rails_env }}"
-
-    - name: get distribution path
-      set_fact:
-        new_release_name: "{{ app_name}}-{{ lookup('pipe', 'date -u +%Y%m%d%H%M%S') }}"
-        new_dist_path: "{{dist_path}}/{{ new_release_name }}.tar.gz"
-
-    - name: create app distribution
-      args:
-        chdir: "{{ local_source_path }}"
-      # TODO: consider using "archive" module after upgrading to Ansible 2.3+
-      shell: "tar --create --exclude=.git --exclude=tmp/* --exclude=log/* --gzip --verbose --file {{ new_dist_path }} ."
-
-    - name: get file distribution size
-      stat:
-        path: "{{ new_dist_path }}"
-      register: distro
-
-    - debug:
-        msg: "Distribution size: {{ distro.stat.size }}"
-      when: distro is defined and distro.stat is defined
+  roles:
+    - build-distribution
 
 - name: deploy app distribution
   hosts:
     - app
     - work
-  tasks:
-
-    - name: unarchive distribution
-      unarchive:
-        src: "{{ new_dist_path }}"
-        path: "{{ releases_path }}/{{ new_release_name }}"
-        owner: "{{ deploy_user }}"
-        group: "{{ deploy_group }}"
-        mode: 0644
-
-    - name: link most recent release to "/var/www/app/current"
-      file:
-        state: link
-        src: "{{ releases_path }}/{{ new_release_name }}"
-        dest: "{{ app_path }}"
-        force: yes
-
-    - name: migrate db (run once)
-      run_once: true
-      args:
-        chdir: "{{ releases_path }}/{{ new_release_name }}"
-      environment:
-        RAILS_ENV: "{{ rails_env }}"
-      shell: "{{ bundle }} exec rails db:migrate --trace"
-
-- name: launch app servers
-  hosts: app
-  become: yes
   roles:
-    - puma
+    - deploy-distribution
 
+- name: launch app server
 - name: launch workers
-  hosts: worker
-  become: yes
-  roles:
-    - sidekiq
-
-# - name: worker servers
-#   hosts: worker
-#   tasks:
-
-#     - name: ensure sidekiq service is enabled
-
-#     - name: restart sidekiq
-
-# # - (?) delete old releases which are not linked to "/var/www/app/current"
-# delete local distribution
