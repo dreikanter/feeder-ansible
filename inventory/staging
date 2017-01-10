@@ -22,3 +22,7 @@ ansible_ssh_private_key_file = /secrets/rails_ansible_staging
 git_branch = master
 rails_env = production
 push_ruby_binaries = yes
+
+http_basic_auth_enabled = yes
+http_basic_auth_user = admin
+http_basic_auth_password = admin

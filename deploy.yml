@@ -5,10 +5,19 @@
   tasks:
     - set_fact:
         new_release_name: "{{ app_name }}-{{ lookup('pipe', 'date -u +%Y%m%d%H%M%S') }}"
-        run_once: yes
+
     - set_fact:
         new_release_path: "{{ releases_path }}/{{ new_release_name }}"
-        run_once: true
+
+    # TODO: Load admin credentials from secure location
+
+    - when: (http_basic_auth_enabled is defined and http_basic_auth_enabled) and (http_basic_auth_user is not defined)
+      set_fact:
+        http_basic_auth_user: "{{ lookup('env', 'http_basic_auth_user') }}"
+
+    - when: (http_basic_auth_enabled is defined and http_basic_auth_enabled) and (http_basic_auth_password is not defined)
+      set_fact:
+        http_basic_auth_password: "{{ lookup('env', 'http_basic_auth_password') }}"
 
 - name: ensure directories structure exists
   hosts:
@@ -16,7 +25,8 @@
     - work
   gather_facts: no
   tasks:
-    - file:
+    - become: yes
+      file:
         path: "{{ item }}"
         state: directory
         owner: "{{ deploy_user }}"

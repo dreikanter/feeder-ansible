@@ -3,7 +3,7 @@
 [Unit]
 Description=Puma HTTP Server
 After=network.target
-Requires={{ puma_service_name }}.socket
+Requires=puma.socket
 
 [Service]
 Type=simple
