@@ -16,16 +16,22 @@
     path: "{{ ruby_path }}"
   register: ruby_installed
 
+- set_fact:
+    push_ruby_binaries: "{{ (push_ruby_binaries is defined) and push_ruby_binaries }}"
+
+- set_fact:
+    install_ruby_from_sources: "{{ (not push_ruby_binaries) and (not ruby_installed.stat.exists) }}"
+
 - name: install ruby from sources
   become: yes
   become_user: "{{ deploy_user }}"
   shell: ruby-install --install-dir {{ ruby_path }} ruby {{ ruby_version }} -- --disable-install-rdoc
-  when: (push_ruby_binaries is not defined) or (not push_ruby_binaries) and (ruby_installed.stat.isdir is not defined)
+  when: install_ruby_from_sources
 
 - name: push prebuilt ruby binaries from local machine
   become: yes
   become_user: "{{ deploy_user }}"
-  when: "{{ (push_ruby_binaries is defined) and push_ruby_binaries }}"
+  when: push_ruby_binaries
   synchronize:
     src: "{{ local_ruby_path }}/"
     dest: "{{ ruby_path }}"
