@@ -2,26 +2,28 @@
 localhost ansible_connection=local
 
 [db]
-54.153.24.105
+54.67.88.122
 
 [app]
-54.153.24.105
+54.67.88.122
 
 [worker]
-54.153.24.105
+54.67.88.122
 
 [redis]
-54.153.24.105
+54.67.88.122
 
 [elasticsearch]
-54.153.24.105
+54.67.88.122
 
 [all:vars]
 deploy_user = deploy
 ansible_ssh_private_key_file = /secrets/rails_ansible_staging
 git_branch = master
 rails_env = production
-push_ruby_binaries = yes
+
+# Not working yet
+push_ruby_binaries = no
 
 http_basic_auth_enabled = yes
 http_basic_auth_user = admin

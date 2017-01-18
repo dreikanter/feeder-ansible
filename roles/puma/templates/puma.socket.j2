@@ -5,7 +5,7 @@ Description=Puma HTTP Server Accept Sockets
 
 [Socket]
 ListenStream=0.0.0.0:9292
-ListenStream=/run/puma.sock
+ListenStream={{ puma_socket }}
 
 # Socket options matching Puma defaults
 NoDelay=true

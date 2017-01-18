@@ -20,6 +20,7 @@
     enabled: true
 
 - name: generate .htpasswd
+  become: yes
   when: (http_basic_auth_enabled is defined) and http_basic_auth_enabled
   htpasswd:
     create: yes
@@ -27,6 +28,9 @@
     name: "{{ http_basic_auth_user }}"
     password: "{{ http_basic_auth_password }}"
     path: "{{ app_path }}/config/.htpasswd"
+    owner: root
+    group: www-data
+    mode: 0640
 
 - name: ensure nginx site configuration present
   become: yes
