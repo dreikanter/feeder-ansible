@@ -12,15 +12,18 @@
 - name: check if ruby is installed
   become: yes
   become_user: "{{ deploy_user }}"
-  stat:
-    path: "{{ ruby_path }}"
-  register: ruby_installed
+  shell: "~/.rbenv/bin/rbenv versions | grep -Fq {{ ruby_version }}"
+  register: ruby_version_installed
+  ignore_errors: yes
 
 - set_fact:
-    push_ruby_binaries: "{{ (push_ruby_binaries is defined) and push_ruby_binaries }}"
+    ruby_is_not_installed: "{{ ruby_version_installed | failed }}"
 
 - set_fact:
-    install_ruby_from_sources: "{{ (not push_ruby_binaries) and (not ruby_installed.stat.exists) }}"
+    push_ruby_binaries: "{{ ruby_is_not_installed and (push_ruby_binaries is defined) and push_ruby_binaries }}"
+
+- set_fact:
+    install_ruby_from_sources: "{{ ruby_is_not_installed and (not push_ruby_binaries) }}"
 
 - name: install ruby from sources
   become: yes
