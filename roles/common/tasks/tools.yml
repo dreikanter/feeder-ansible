@@ -22,3 +22,4 @@
     - libcurl4-openssl-dev
     - libsqlite3-dev
     - tree
+    - python-passlib # For Ansible htpasswd module
