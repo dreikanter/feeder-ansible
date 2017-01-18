@@ -12,8 +12,14 @@ WorkingDirectory={{ app_path }}
 ExecStart=/bin/bash -lc "{{ bundle }} exec puma -C {{ puma_config_file }}"
 Restart=always
 TimeoutSec=30
+
 Environment=PUMA_DEBUG=1
 Environment=RAILS_ENV=production
+Environment=PUMA_SOCKET_PATH={{ puma_socket }}
+Environment=PUMA_PID_PATH={{ pids_path }}/puma.pid
+Environment=PUMA_STATE_PATH={{ pids_path }}/puma.state
+Environment=PUMA_LOG_PATH={{ shared_path }}/log/puma.stdout.log
+Environment=PUMA_ERROR_LOG_PATH={{ shared_path }}/log/puma.stderr.log
 
 [Install]
 WantedBy=multi-user.target
