@@ -7,8 +7,6 @@
     - common
     - deploy-user
     - postgres
-    - redis
-    - elasticsearch
     - nodejs
     - ruby
     - nginx

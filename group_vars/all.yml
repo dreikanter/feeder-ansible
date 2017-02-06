@@ -5,7 +5,7 @@
 
 # role: commons
 
-app_name: myapp
+app_name: feeder
 timezone: UTC
 locale: en_US.UTF-8
 swap_enabled: yes
@@ -38,6 +38,11 @@ bundle: "{{ rbenv_root_path }}/shims/bundle"
 # role: nodejs
 
 nodesource_url: https://deb.nodesource.com/setup_6.x
+
+# role: postgres
+
+postgres_user: "{{ app_name }}"
+postgres_password: "{{ app_name }}"
 
 #
 # playbook: deploy

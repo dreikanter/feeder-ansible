@@ -4,11 +4,6 @@
     update_cache: yes
     upgrade: safe
 
-- include: swap.yml
-  when: swap_enabled is defined and swap_enabled == true
-
 - include: tools.yml
 
 - include: locale.yml
-
-- include: systemd.yml

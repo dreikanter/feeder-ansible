@@ -3,27 +3,17 @@
     - app
     - worker
     - db
-    - redis
-    - elasticsearch
   become: yes
   roles:
+    - bootstrap
     - common
+    - debops.swapfile
     - deploy-user
 
 - hosts: db
   become: yes
   roles:
     - postgres
-
-- hosts: redis
-  become: yes
-  roles:
-    - redis
-
-- hosts: elasticsearch
-  become: yes
-  roles:
-    - elasticsearch
 
 - hosts:
     - app
