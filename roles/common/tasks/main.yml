@@ -1,9 +1,0 @@
----
-- name: safe upgrade packages
-  apt:
-    update_cache: yes
-    upgrade: safe
-
-- include: tools.yml
-
-- include: locale.yml

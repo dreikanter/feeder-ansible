@@ -9,19 +9,21 @@
     mode: 0755
 
 - name: push distribution
-  become: yes
-  become_user: "{{ deploy_user }}"
-  synchronize:
-    src: "{{ local_source_path }}/"
-    dest: "{{ new_release_path }}"
-    mode: push
-    archive: no
-    recursive: yes
-    rsync_opts:
-      - "--exclude=.git"
-      - "--exclude=tmp/*"
-      - "--exclude=log/*"
-      - "--quiet"
+  local_action: command rsync \
+    --delay-updates -FF \
+    --compress \
+    --timeout=10 \
+    --delete-after \
+    --archive \
+    --no-owner \
+    --no-group \
+    --exclude=.git \
+    --exclude=tmp/* \
+    --exclude=log/* \
+    --quiet \
+    --rsh "ssh -i /secrets/scaleway" \
+    "{{ local_source_path }}/" \
+    "{{ deploy_user }}@{{inventory_hostname}}:{{ new_release_path }}"
 
 - name: update ownership
   become: yes

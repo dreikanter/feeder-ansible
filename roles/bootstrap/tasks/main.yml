@@ -1,9 +1,13 @@
 ---
-- name: python 2
-  raw: sudo apt-get update -qq && sudo apt-get install -qq python-dev
+- include: ansible_dependencies.yml
 
-- name: install aptitude
+- name: safe upgrade packages
   apt:
-    name: aptitude
-    state: present
     update_cache: yes
+    upgrade: safe
+
+- include: swapfile.yml
+
+- include: tools.yml
+
+- include: locale.yml
