@@ -52,10 +52,10 @@
   roles:
     - deploy-distribution
 
-# - name: launch app servers
-#   hosts: app
-#   roles:
-#     - puma
+- name: launch app servers
+  hosts: app
+  roles:
+    - puma
 
 # - name: launch workers
 #   hosts: worker
