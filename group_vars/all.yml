@@ -73,6 +73,6 @@ secrets_vault_public_key_path: "/secrets/secrets_vault_key.pub"
 secrets_vault_private_key_path: "/secrets/secrets_vault_key"
 
 puma_config_file: "{{ app_path }}/config/puma.rb"
-puma_socket: "{{sockets_path}}/puma.sock"
+puma_socket: "{{ sockets_path }}/puma.sock"
 
 http_basic_auth_enabled: no

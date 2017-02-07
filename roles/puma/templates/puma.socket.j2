@@ -2,9 +2,10 @@
 
 [Unit]
 Description=Puma HTTP Server Accept Sockets
+PartOf=puma.service
 
 [Socket]
-ListenStream=0.0.0.0:9292
+ListenStream=0.0.0.0:3000
 ListenStream={{ puma_socket }}
 
 # Socket options matching Puma defaults
