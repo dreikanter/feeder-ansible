@@ -25,13 +25,13 @@
     line: "{{ deploy_user }} ALL=(ALL) NOPASSWD: ALL"
     state: present
 
-- name: disallow root ssh access
-  lineinfile:
-    dest: /etc/ssh/sshd_config
-    regexp: "^PermitRootLogin"
-    line: "PermitRootLogin no"
-    state: present
-  notify: restart sshd
+# - name: disallow root ssh access
+#   lineinfile:
+#     dest: /etc/ssh/sshd_config
+#     regexp: "^PermitRootLogin"
+#     line: "PermitRootLogin no"
+#     state: present
+#   notify: restart sshd
 
 - name: disallow password authentication
   lineinfile:
