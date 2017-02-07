@@ -35,18 +35,18 @@
   become: yes
   become_user: "{{ deploy_user }}"
   when: push_ruby_binaries
-  synchronize:
-    src: "{{ local_ruby_path }}/"
-    dest: "{{ ruby_path }}"
-    mode: push
-    delete: yes
-    archive: no
-    recursive: yes
-    rsync_opts:
-      - "--exclude=.git"
-      - "--exclude=tmp/*"
-      - "--exclude=log/*"
-      - "--quiet"
+  local_action: command rsync \
+    --delay-updates -FF \
+    --compress \
+    --timeout=10 \
+    --delete-after \
+    --archive \
+    --no-owner \
+    --no-group \
+    --quiet \
+    --rsh "ssh -i /secrets/scaleway" \
+    "{{ local_ruby_path }}/" \
+    "{{ deploy_user }}@{{inventory_hostname}}:{{ ruby_path }}"
 
 - name: rehash rbenv
   become: yes

@@ -4,7 +4,6 @@
   become: yes
   roles:
     - bootstrap
-    - common
     - deploy-user
     - postgres
     - nodejs

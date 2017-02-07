@@ -33,6 +33,7 @@ rbenv_root_path: "{{ deploy_user_path }}/.rbenv"
 rubies_path: "{{ rbenv_root_path }}/versions"
 ruby_path: "{{ rubies_path }}/{{ ruby_version }}"
 
+push_ruby_binaries: True
 local_ruby_path: "~/.rbenv/versions/{{ ruby_version }}"
 
 rbenv_bin: "{{ rbenv_root_path }}/bin/rbenv"
@@ -51,7 +52,7 @@ postgres_password: "{{ app_name }}"
 # playbook: deploy
 #
 
-git_url: "https://github.com/dreikanter/rails-ansible-sample.git"
+git_url: "https://github.com/dreikanter/feeder.git"
 git_branch: master
 git_key_file: None
 
