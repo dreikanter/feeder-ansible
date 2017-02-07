@@ -7,6 +7,9 @@ localhost ansible_connection=local
 [worker]
 51.15.51.40
 
+[db]
+51.15.51.40
+
 [all:vars]
 deploy_user = deploy
 ansible_ssh_private_key_file = /secrets/scaleway
