@@ -21,11 +21,6 @@
     accept_hostkey: yes
     key_file: "{{ git_key_file }}"
 
-- name: install gems
-  args:
-    chdir: "{{ local_source_path }}"
-  shell: "{{ local_bundle }} install --deployment --without development test"
-
 - name: decrypt configuration
   args:
     chdir: "{{ local_source_path }}"
