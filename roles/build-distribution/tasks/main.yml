@@ -22,13 +22,11 @@
     key_file: "{{ git_key_file }}"
 
 - name: install gems
-  become: yes
-  become_user: "{{ deploy_user }}"
   args:
-    chdir: "{{ new_release_path }}"
+    chdir: "{{ local_source_path }}"
   environment:
     RAILS_ENV: "{{ rails_env }}"
-  shell: "{{ bundle }} install --deployment --without development test"
+  shell: "{{ local_bundle }} install --deployment --without development test"
 
 - name: decrypt configuration
   args:
