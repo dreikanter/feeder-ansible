@@ -54,6 +54,9 @@
     state: present
     role_attr_flags: "SUPERUSER,CREATEDB,LOGIN"
 
+- set_fact:
+    postgres_db_name: "{{ app_name }}_production"
+
 - name: create database
   become: yes
   become_user: "{{ postgresql_admin_user }}"
