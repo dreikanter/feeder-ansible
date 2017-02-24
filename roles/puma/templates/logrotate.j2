@@ -1,0 +1,21 @@
+# {{ ansible_managed }}
+
+{{ app_path }}/log/*.log {
+  daily
+  missingok
+  rotate 7
+  delaycompress
+  notifempty
+  copytruncate
+  create 0640 {{ deploy_user }} {{ deploy_group }}
+}
+
+{{ logs_path }}/*.log {
+  daily
+  missingok
+  rotate 7
+  delaycompress
+  notifempty
+  copytruncate
+  create 0640 {{ deploy_user }} {{ deploy_group }}
+}

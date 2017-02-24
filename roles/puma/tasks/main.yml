@@ -19,6 +19,12 @@
     state: restarted
     enabled: true
 
+- name: enable logrotate config for puma
+  become: yes
+  template:
+    scr: logrotate.j2
+    dest: "/etc/logrotate.d/puma"
+
 - name: generate .htpasswd
   become: yes
   when: (http_basic_auth_enabled is defined) and http_basic_auth_enabled
