@@ -29,15 +29,12 @@
 
 - name: configure authentication
   become: yes
-  lineinfile:
+  template:
+    src: "pg_hba.conf"
     dest: "{{ postgres_hba_file }}"
-    state: present
-    create: yes
-    line: "{{ item }}"
-  with_items:
-    - "local all all trust"
-    - "host  all all 127.0.0.1/32 trust"
-    - "host  all all ::1/128 trust"
+    owner: "root"
+    group: "root"
+    mode: 0644
 
 - name: restart postgres
   become: yes
