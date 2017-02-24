@@ -21,7 +21,7 @@
     --exclude=tmp/* \
     --exclude=log/* \
     --quiet \
-    --rsh "ssh -i /secrets/scaleway" \
+    --rsh "ssh -i /secrets/scaleway -o StrictHostKeyChecking=no" \
     "{{ local_source_path }}/" \
     "{{ deploy_user }}@{{inventory_hostname}}:{{ new_release_path }}"
 
