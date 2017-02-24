@@ -2,13 +2,13 @@
 localhost ansible_connection=local
 
 [app]
-51.15.51.40
+51.15.37.25
 
 [worker]
-51.15.51.40
+51.15.37.25
 
 [db]
-51.15.51.40
+51.15.37.25
 
 [all:vars]
 deploy_user = deploy
