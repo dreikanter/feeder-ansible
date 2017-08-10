@@ -39,18 +39,14 @@
         - "{{ pids_path }}"
         - "{{ sockets_path }}"
         - "{{ releases_path }}"
+        - "{{ repo_path }}"
 
-- name: build app distribution
-  hosts: localhost
-  roles:
-    - build-distribution
-
-- name: deploy app distribution
+- name: deploy application
   hosts:
     - app
     - work
   roles:
-    - deploy-distribution
+    - deploy
 
 - name: launch app servers
   hosts: app

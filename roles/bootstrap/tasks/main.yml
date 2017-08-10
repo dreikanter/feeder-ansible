@@ -10,4 +10,4 @@
 
 - include: tools.yml
 
-- include: locale.yml
+# - include: locale.yml

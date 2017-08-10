@@ -64,6 +64,7 @@ logs_path:     "{{ shared_path }}/log"
 pids_path:     "{{ shared_path }}/pids"
 sockets_path:  "{{ shared_path }}/sockets"
 releases_path: "{{ app_root_path }}/releases"
+repo_path:     "{{ app_root_path }}/repo"
 
 local_source_path: "~/tmp/repo"
 dist_path: "~/tmp"
