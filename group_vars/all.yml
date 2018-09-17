@@ -20,7 +20,7 @@ swapfile__files: [ '/swapfile' ]
 deploy_user: deploy
 deploy_group: "{{ deploy_user }}"
 deploy_user_path: "/home/{{ deploy_user }}"
-authorized_public_keys: [ "/secrets/scaleway.pub" ]
+authorized_public_keys: [ "{{ secrets_path }}/scaleway.pub" ]
 
 # role: ruby
 
@@ -70,8 +70,8 @@ local_source_path: "~/tmp/repo"
 dist_path: "~/tmp"
 
 # These paths should be common for Vagrant and CI
-secrets_vault_public_key_path: "/secrets/secrets_vault_key.pub"
-secrets_vault_private_key_path: "/secrets/secrets_vault_key"
+secrets_vault_public_key_path: "{{ secrets_path }}/secrets_vault_key.pub"
+secrets_vault_private_key_path: "{{ secrets_path }}/secrets_vault_key"
 
 puma_config_file: "{{ app_path }}/config/puma.rb"
 puma_socket: "{{ sockets_path }}/puma.sock"
