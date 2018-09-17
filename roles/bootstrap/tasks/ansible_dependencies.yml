@@ -1,7 +1,4 @@
 ---
-- name: python 2
-  raw: sudo apt-get update -qq && sudo apt-get install -qq python-dev
-
 - name: install aptitude
   apt:
     name: aptitude

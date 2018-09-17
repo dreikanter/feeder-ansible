@@ -3,6 +3,9 @@
 # playbook: provision
 #
 
+ansible_python_interpreter: "/usr/bin/python3"
+secrets_path: "~/Sources/feeder-ansible-secrets"
+
 # role: bootstrap
 
 app_name: feeder
