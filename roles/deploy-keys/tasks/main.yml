@@ -1,3 +1,0 @@
----
-- name: push private key for deployment target access
-  copy:
