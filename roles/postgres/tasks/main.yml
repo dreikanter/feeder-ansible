@@ -17,15 +17,18 @@
     state: present
     update_cache: yes
   with_items:
-    - "postgresql-{{ postgres_version }}"
     - "libpq-dev"
+    - "postgresql-{{ postgres_version }}"
     - "postgresql-contrib-{{ postgres_version }}"
     - "postgresql-{{ postgres_version }}-postgis-{{ postgres_postgis_version }}"
-    - "python-dev"
-    - "python-pip"
-    - "python-psycopg2"
 
-# NOTE: psycopg2 is required for postgresql_user module
+- name: install psycopg2 for ansible postgresql_user module
+  become: true
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - python3-psycopg2
 
 - name: configure authentication
   become: yes
@@ -84,6 +87,14 @@
     state: "present"
   with_items: "{{ postgres_extensions }}"
   when: "{{ postgres_extensions }}"
+
+- name: install pip3 for for ansible pip module
+  become: true
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - python3-pip
 
 - name: install pgcli
   become: yes
