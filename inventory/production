@@ -1,17 +1,17 @@
-[localhost]
+[local]
 localhost ansible_connection=local
 
 [app]
-51.15.37.25
+188.166.64.60
 
 [worker]
-51.15.37.25
+188.166.64.60
 
 [db]
-51.15.37.25
+188.166.64.60
 
 [all:vars]
 deploy_user = deploy
-ansible_ssh_private_key_file = /secrets/scaleway
+ansible_ssh_private_key_file = ~/.ssh/feeder
 git_branch = master
 rails_env = production
