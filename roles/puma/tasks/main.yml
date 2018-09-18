@@ -41,7 +41,7 @@
 - name: ensure nginx site configuration present
   become: yes
   template:
-    src: "nginx-site.conf"
+    src: "nginx-site.conf.j2"
     dest: "/etc/nginx/sites-available/{{ app_name }}"
     owner: root
     group: root

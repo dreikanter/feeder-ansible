@@ -80,3 +80,9 @@ puma_config_file: "{{ app_path }}/config/puma.rb"
 puma_socket: "{{ sockets_path }}/puma.sock"
 
 http_basic_auth_enabled: no
+
+# role: letsenrypt
+
+letsencrypt_email: alex.musayev@gmail.com
+letsencrypt_dir: /var/www/letsencrypt
+letsencrypt_domain_name: frf.im
