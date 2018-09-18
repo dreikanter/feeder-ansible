@@ -1,7 +1,0 @@
----
-elasticsearch_version: 2.x
-elasticsearch_packages:
-  - oracle-java8-installer
-  - ca-certificates
-  - oracle-java8-set-default
-  - elasticsearch
