@@ -1,6 +1,0 @@
-[local]
-localhost ansible_connection=local
-
-[all:vars]
-deploy_user = vagrant
-push_ruby_binaries = no

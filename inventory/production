@@ -4,12 +4,6 @@ localhost ansible_connection=local
 [app]
 188.166.64.60
 
-[worker]
-188.166.64.60
-
-[db]
-188.166.64.60
-
 [all:vars]
 deploy_user = deploy
 ansible_ssh_private_key_file = ~/.ssh/feeder

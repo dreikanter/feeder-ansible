@@ -1,25 +1,10 @@
 ---
-- hosts:
-    - app
-    - worker
-    - db
+- hosts: app
   become: yes
   roles:
     - bootstrap
     - deploy-user
-
-- hosts: db
-  become: yes
-  roles:
     - postgres
-
-- hosts:
-    - app
-    - worker
-  roles:
     - nodejs
     - ruby
-
-- hosts: app
-  roles:
     - nginx

@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: app
   gather_facts: no
   run_once: true
   tasks:
@@ -20,9 +20,7 @@
         http_basic_auth_password: "{{ lookup('env', 'http_basic_auth_password') }}"
 
 - name: ensure directories structure exists
-  hosts:
-    - app
-    - work
+  hosts: app
   gather_facts: no
   tasks:
     - become: yes
@@ -42,9 +40,7 @@
         - "{{ repo_path }}"
 
 - name: deploy application
-  hosts:
-    - app
-    - work
+  hosts: app
   roles:
     - deploy
 
@@ -52,10 +48,5 @@
   hosts: app
   roles:
     - puma
-
-# - name: launch workers
-#   hosts: worker
-#   roles:
-#     - sidekiq
 
 # TODO: Delete old releases which are not linked to "/var/www/app/current"
