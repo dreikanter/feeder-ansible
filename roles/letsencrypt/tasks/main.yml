@@ -20,7 +20,7 @@
     state: restarted
 
 - name: "create letsencrypt certificate"
-  shell: "letsencrypt certonly -n --webroot -w {{ letsencrypt_dir }} -m {{ letsencrypt_email }} --agree-tos -d {{ letsencrypt_domain_name }}"
+  shell: "certbot certonly --non-interactive --webroot --webroot-path /var/www/letsencrypt --email alex.musayev@gmail.com --agree-tos --domain frf.im"
   args:
     creates: "/etc/letsencrypt/live/{{ letsencrypt_domain_name }}"
 
@@ -33,4 +33,4 @@
   cron:
     name: "letsencrypt_renewal"
     special_time: "weekly"
-    job: "letsencrypt --renew certonly -n --webroot -w {{ letsencrypt_dir }} -m {{ letsencrypt_email }} --agree-tos -d {{ letsencrypt_domain_name }} && service nginx reload"
+    job: "certbot certonly --non-interactive --webroot --webroot-path /var/www/letsencrypt --email alex.musayev@gmail.com --agree-tos --domain frf.im && service nginx reload"
