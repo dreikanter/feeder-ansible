@@ -9,3 +9,4 @@
     - ruby
     - letsencrypt
     - nginx
+    - yarn
