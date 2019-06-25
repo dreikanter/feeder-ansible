@@ -73,8 +73,7 @@ local_source_path: "~/tmp/repo"
 dist_path: "~/tmp"
 
 # These paths should be common for Vagrant and CI
-secrets_vault_public_key_path: "{{ secrets_path }}/secrets_vault_key.pub"
-secrets_vault_private_key_path: "{{ secrets_path }}/secrets_vault_key"
+credentials_master_key_path: "{{ secrets_path }}/master.key"
 
 puma_config_file: "{{ app_path }}/config/puma.rb"
 puma_socket: "{{ sockets_path }}/puma.sock"

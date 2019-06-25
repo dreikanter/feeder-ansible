@@ -18,7 +18,6 @@
 
 - name: install npm packages
   yarn:
-    production: true
     path: "{{ repo_path }}"
 
 - name: push configuration key
