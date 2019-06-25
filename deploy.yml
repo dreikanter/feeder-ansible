@@ -50,3 +50,33 @@
     - puma
 
 # TODO: Delete old releases which are not linked to "/var/www/app/current"
+
+- hosts: app
+  gather_facts: no
+  run_once: true
+  tasks:
+  - name: report distrib size
+    shell: "du -hs {{ app_path }}/ | awk '{print $1;}'"
+    register: p
+
+  - debug:
+      msg: "dist size: {{ size }}"
+    vars:
+      size: "{{ p.get('stdout') }}"
+
+  - name: report disk usage
+    debug:
+      msg: "available space: {{ available }}; total: {{ total }}; usage: {{ usage }}%"
+    vars:
+      mount: "{{ ansible_mounts | selectattr('mount', 'equalto', '/') | list | first }}"
+      available: "{{ mount.size_available | filesizeformat }}"
+      total: "{{ mount.size_total | filesizeformat }}"
+      usage: "{{ (mount.size_available / mount.size_total * 100) | round }}"
+
+  - name: check free space threshold
+    assert:
+      that: "{{ usage }} < 0.9"
+      msg: "disk space has reached 90% threshold"
+    vars:
+      mount: "{{ ansible_mounts | selectattr('mount', 'equalto', '/') | list | first }}"
+      usage: "{{ mount.size_available / mount.size_total }}"
