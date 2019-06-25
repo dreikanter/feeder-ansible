@@ -58,7 +58,7 @@
 - name: push distribution
   become: yes
   become_user: "{{ deploy_user }}"
-  shell: "rsync -a {{ repo_path }}/ {{ new_release_path }} --exclude .git"
+  shell: "rsync -a {{ repo_path }}/ {{ new_release_path }} --exclude .git --exclude node_modules"
 
 - name: link most recent release to "/var/www/app/current"
   become: yes
