@@ -16,20 +16,18 @@
     RAILS_ENV: "{{ rails_env }}"
   shell: "{{ bundle }} install --deployment --without development test"
 
+- name: install npm packages
+  yarn:
+    production: true
+    path: "{{ repo_path }}"
+
 - name: push configuration key
   copy:
-    src: "{{ secrets_vault_private_key_path }}"
-    dest: "{{ deploy_user_path }}/secrets_vault_key"
+    src: "{{ credentials_master_key_path }}"
+    dest: "{{ repo_path }}/config/master.key"
     owner: "{{ deploy_user }}"
     group: "{{ deploy_group }}"
     mode: 0600
-
-- name: decrypt configuration
-  args:
-    chdir: "{{ repo_path }}"
-  shell: "{{ bundle }} exec rails secrets:decrypt"
-  environment:
-    SECRETS_VAULT_PRIVATE_KEY: "{{ deploy_user_path }}/secrets_vault_key"
 
 - name: migrate db (run once)
   become: yes
