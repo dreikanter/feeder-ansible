@@ -39,10 +39,10 @@
     RAILS_ENV: "{{ rails_env }}"
   shell: "{{ bundle }} exec rails db:migrate --trace"
 
-- name: compile assets
+- name: build webpack bundles
   args:
     chdir: "{{ repo_path }}"
-  shell: "{{ bundle }} exec rails assets:precompile"
+  shell: "{{ bundle }} exec rails webpacker:clobber webpacker:compile"
   environment:
     RAILS_ENV: "{{ rails_env }}"
 
