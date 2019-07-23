@@ -66,17 +66,17 @@
 
   - name: report disk usage
     debug:
-      msg: "available space: {{ available }}; total: {{ total }}; usage: {{ usage }}%"
+      msg: "total disk space: {{ total }}; available: {{ available }}%"
     vars:
       mount: "{{ ansible_mounts | selectattr('mount', 'equalto', '/') | list | first }}"
       available: "{{ mount.size_available | filesizeformat }}"
       total: "{{ mount.size_total | filesizeformat }}"
-      usage: "{{ (mount.size_available / mount.size_total * 100) | round }}"
+      available: "{{ (mount.size_available / mount.size_total * 100) | round }}"
 
   - name: check free space threshold
     assert:
-      that: "{{ usage }} < 0.9"
+      that: "{{ available }} < 0.9"
       msg: "disk space has reached 90% threshold"
     vars:
       mount: "{{ ansible_mounts | selectattr('mount', 'equalto', '/') | list | first }}"
-      usage: "{{ mount.size_available / mount.size_total }}"
+      available: "{{ mount.size_available / mount.size_total }}"
