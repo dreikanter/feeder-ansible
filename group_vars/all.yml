@@ -78,8 +78,6 @@ credentials_master_key_path: "{{ secrets_path }}/master.key"
 puma_config_file: "{{ app_path }}/config/puma.rb"
 puma_socket: "{{ sockets_path }}/puma.sock"
 
-http_basic_auth_enabled: no
-
 # role: letsenrypt
 
 letsencrypt_email: alex.musayev@gmail.com

@@ -9,16 +9,6 @@
     - set_fact:
         new_release_path: "{{ releases_path }}/{{ new_release_name }}"
 
-    # TODO: Load admin credentials from secure location
-
-    - when: (http_basic_auth_enabled is defined and http_basic_auth_enabled) and (http_basic_auth_user is not defined)
-      set_fact:
-        http_basic_auth_user: "{{ lookup('env', 'http_basic_auth_user') }}"
-
-    - when: (http_basic_auth_enabled is defined and http_basic_auth_enabled) and (http_basic_auth_password is not defined)
-      set_fact:
-        http_basic_auth_password: "{{ lookup('env', 'http_basic_auth_password') }}"
-
 - name: ensure directories structure exists
   hosts: app
   gather_facts: no
