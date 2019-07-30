@@ -1,0 +1,24 @@
+---
+- name: "cronjob to update the feeds"
+  cron:
+    name: "feeds"
+    minute: "*/5"
+    job: "cd {{ app_path }} && RAILS_ENV=production {{ bundle }} exec rails pull:all jobs:workoff > {{ logs_path }}/cron.log 2>&1"
+
+- name: "cronjob to clean the db"
+  cron:
+    name: "clean"
+    special_time: "daily"
+    job: "cd {{ app_path }} && RAILS_ENV=production {{ bundle }} exec rails feeder:clean > {{ logs_path }}/cron-clean.log 2>&1"
+
+- name: "cronjob to update subscribers count"
+  cron:
+    name: "subs"
+    special_time: "hourly"
+    job: "cd {{ app_path }} && RAILS_ENV=production {{ bundle }} exec rails subs jobs:workoff > {{ logs_path }}/cron-subs.log 2>&1"
+
+- name: "cronjob to update blocked ips"
+  cron:
+    name: "blocked_ips"
+    special_time: "hourly"
+    job: "cd {{ app_path }} && RAILS_ENV=production {{ bundle }} exec rails r scripts/update_blocked_ips.rb > {{ logs_path }}/cron-blocked-ips.log 2>&1"
