@@ -61,7 +61,7 @@
 
   - name: check free space threshold
     assert:
-      that: "{{ available }} > 10"
+      that: "{{ available }} > 0.1"
       fail_msg: "low disk space!"
       success_msg: "disk space is enough"
       quiet: true
