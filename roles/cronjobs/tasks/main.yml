@@ -3,7 +3,7 @@
   cron:
     name: "feeds"
     minute: "*/5"
-    job: "cd {{ app_path }} && RAILS_ENV=production {{ bundle }} exec rails feeder:pull_stale jobs:workoff > {{ logs_path }}/cron.log 2>&1"
+    job: "cd {{ app_path }} && RAILS_ENV=production {{ bundle }} exec rails feeder:pull_stale > {{ logs_path }}/cron.log 2>&1"
 
 - name: "cronjob to clean the db"
   cron:
@@ -15,7 +15,7 @@
   cron:
     name: "subs"
     special_time: "hourly"
-    job: "cd {{ app_path }} && RAILS_ENV=production {{ bundle }} exec rails feeder:subs jobs:workoff > {{ logs_path }}/cron-subs.log 2>&1"
+    job: "cd {{ app_path }} && RAILS_ENV=production {{ bundle }} exec rails feeder:subs > {{ logs_path }}/cron-subs.log 2>&1"
 
 - name: "cronjob to update blocked ips"
   cron:
