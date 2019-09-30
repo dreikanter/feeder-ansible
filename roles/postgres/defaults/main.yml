@@ -5,8 +5,8 @@ postgres_password: sample
 postgres_postgis_version: 2.4
 postgresql_admin_user: postgres
 
-postgres_conf_directory: "/etc/postgresql/{{ postgres_version }}/main"
-postgres_hba_file: "{{ postgres_conf_directory }}/pg_hba.conf"
+postgres_conf_directory: "/etc/postgresql/{{postgres_version}}/main"
+postgres_hba_file: "{{postgres_conf_directory}}/pg_hba.conf"
 
 postgres_extensions:
   - hstore

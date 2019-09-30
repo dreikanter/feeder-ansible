@@ -1,12 +1,12 @@
 ---
 - name: create application group
   group:
-    name: "{{ deploy_group }}"
+    name: "{{deploy_group}}"
 
 - name: create application user
   user:
-    name: "{{ deploy_user }}"
-    group: "{{ deploy_group }}"
+    name: "{{deploy_user}}"
+    group: "{{deploy_group}}"
     state: present
     shell: /bin/bash
     generate_ssh_key: yes
@@ -14,15 +14,15 @@
 - name: add authorized deploy keys
   authorized_key:
     manage_dir: yes
-    user: "{{ deploy_user }}"
-    key: "{{ lookup('file', item) }}"
-  with_items: "{{ authorized_public_keys }}"
+    user: "{{deploy_user}}"
+    key: "{{lookup('file', item)}}"
+  with_items: "{{authorized_public_keys}}"
 
 - name: add deploy user to sudoers
   lineinfile:
     dest: /etc/sudoers
-    regexp: "{{ deploy_user }} ALL"
-    line: "{{ deploy_user }} ALL=(ALL) NOPASSWD: ALL"
+    regexp: "{{deploy_user}} ALL"
+    line: "{{deploy_user}} ALL=(ALL) NOPASSWD: ALL"
     state: present
 
 # - name: disallow root ssh access
@@ -50,12 +50,12 @@
     mode: 0644
 
 - name: test if linger is enabled
-  shell: "loginctl show-user {{ deploy_user }}"
+  shell: "loginctl show-user {{deploy_user}}"
   changed_when: false
-  failed_when: "{{ 'command not found' in systemd_linger_enabled_test.stderr }}"
+  failed_when: "{{'command not found' in systemd_linger_enabled_test.stderr}}"
   register: systemd_linger_enabled_test
 
 - name: enabled linger
-  shell: "loginctl enable-linger {{ deploy_user }}"
+  shell: "loginctl enable-linger {{deploy_user}}"
   changed_when: true
-  when: "{{ 'Failed' in systemd_linger_enabled_test.stderr }}"
+  when: "{{'Failed' in systemd_linger_enabled_test.stderr}}"

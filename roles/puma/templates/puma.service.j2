@@ -1,4 +1,4 @@
-# {{ ansible_managed }}
+# {{ansible_managed}}
 
 [Unit]
 Description=Puma HTTP Server
@@ -7,17 +7,17 @@ Requires=puma.socket
 
 [Service]
 Type=simple
-User={{ deploy_user }}
-WorkingDirectory={{ app_path }}
-ExecStart=/bin/bash -lc "{{ bundle }} exec puma -C {{ puma_config_file }} --redirect-stdout {{ shared_path }}/log/puma.stdout.log --redirect-stderr {{ shared_path }}/log/puma.stderr.log"
+User={{deploy_user}}
+WorkingDirectory={{app_path}}
+ExecStart=/bin/bash -lc "{{bundle}} exec puma -C {{puma_config_file}} --redirect-stdout {{shared_path}}/log/puma.stdout.log --redirect-stderr {{shared_path}}/log/puma.stderr.log"
 Restart=always
 TimeoutSec=30
 
 Environment=PUMA_DEBUG=1
 Environment=RAILS_ENV=production
-Environment=PUMA_SOCKET_PATH={{ puma_socket }}
-Environment=PUMA_PID_PATH={{ pids_path }}/puma.pid
-Environment=PUMA_STATE_PATH={{ pids_path }}/puma.state
+Environment=PUMA_SOCKET_PATH={{puma_socket}}
+Environment=PUMA_PID_PATH={{pids_path}}/puma.pid
+Environment=PUMA_STATE_PATH={{pids_path}}/puma.state
 
 [Install]
 WantedBy=multi-user.target

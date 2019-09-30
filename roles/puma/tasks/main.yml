@@ -29,15 +29,15 @@
   become: yes
   template:
     src: "nginx-site.conf.j2"
-    dest: "/etc/nginx/sites-available/{{ app_name }}"
+    dest: "/etc/nginx/sites-available/{{app_name}}"
     owner: root
     group: root
 
 - name: ensure nginx site configuration is enabled
   become: yes
   file:
-    src: "/etc/nginx/sites-available/{{ app_name }}"
-    dest: "/etc/nginx/sites-enabled/{{ app_name }}"
+    src: "/etc/nginx/sites-available/{{app_name}}"
+    dest: "/etc/nginx/sites-enabled/{{app_name}}"
     state: link
 
 - name: restart nginx
