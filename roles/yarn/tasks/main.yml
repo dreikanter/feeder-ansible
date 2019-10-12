@@ -25,8 +25,8 @@
 - name: "fix permissions for local config"
   become: yes
   file:
-    path: "{{ deploy_user_path }}/.config/yarn"
+    path: "{{deploy_user_path}}/.config/yarn"
     state: "directory"
-    owner: "{{ deploy_user }}"
-    group: "{{ deploy_group }}"
+    owner: "{{deploy_user}}"
+    group: "{{deploy_group}}"
     mode: 0700

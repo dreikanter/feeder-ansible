@@ -4,10 +4,10 @@
   run_once: true
   tasks:
     - set_fact:
-        new_release_name: "{{ app_name }}-{{ lookup('pipe', 'date -u +%Y%m%d%H%M%S') }}"
+        new_release_name: "{{app_name}}-{{lookup('pipe', 'date -u +%Y%m%d%H%M%S')}}"
 
     - set_fact:
-        new_release_path: "{{ releases_path }}/{{ new_release_name }}"
+        new_release_path: "{{releases_path}}/{{new_release_name}}"
 
 - name: ensure directories structure exists
   hosts: app
@@ -15,19 +15,19 @@
   tasks:
     - become: yes
       file:
-        path: "{{ item }}"
+        path: "{{item}}"
         state: directory
-        owner: "{{ deploy_user }}"
-        group: "{{ deploy_group }}"
+        owner: "{{deploy_user}}"
+        group: "{{deploy_group}}"
         mode: u=rwX,g=rX,o=rX
       with_items:
-        - "{{ app_root_path }}"
-        - "{{ shared_path }}"
-        - "{{ logs_path }}"
-        - "{{ pids_path }}"
-        - "{{ sockets_path }}"
-        - "{{ releases_path }}"
-        - "{{ repo_path }}"
+        - "{{app_root_path}}"
+        - "{{shared_path}}"
+        - "{{logs_path}}"
+        - "{{pids_path}}"
+        - "{{sockets_path}}"
+        - "{{releases_path}}"
+        - "{{repo_path}}"
 
 - name: deploy application
   hosts: app
@@ -43,28 +43,28 @@
   run_once: true
   tasks:
   - name: report distrib size
-    shell: "du -hs {{ app_path }}/ | awk '{print $1;}'"
+    shell: "du -hs {{app_path}}/ | awk '{print $1;}'"
     register: p
 
   - debug:
-      msg: "dist size: {{ size }}"
+      msg: "dist size: {{size}}"
     vars:
-      size: "{{ p.get('stdout') }}"
+      size: "{{p.get('stdout')}}"
 
   - name: report disk usage
     debug:
-      msg: "total disk space: {{ total }}; available: {{ available }}%"
+      msg: "total disk space: {{total}}; available: {{available}}%"
     vars:
-      mount: "{{ ansible_mounts | selectattr('mount', 'equalto', '/') | list | first }}"
-      total: "{{ mount.size_total | filesizeformat }}"
-      available: "{{ (mount.size_available / mount.size_total * 100) | round }}"
+      mount: "{{ansible_mounts | selectattr('mount', 'equalto', '/') | list | first}}"
+      total: "{{mount.size_total | filesizeformat}}"
+      available: "{{(mount.size_available / mount.size_total * 100) | round}}"
 
   - name: check free space threshold
     assert:
-      that: "{{ available }} > 0.1"
+      that: "{{available}} > 0.1"
       fail_msg: "low disk space!"
       success_msg: "disk space is enough"
       quiet: true
     vars:
-      mount: "{{ ansible_mounts | selectattr('mount', 'equalto', '/') | list | first }}"
-      available: "{{ mount.size_available / mount.size_total }}"
+      mount: "{{ansible_mounts | selectattr('mount', 'equalto', '/') | list | first}}"
+      available: "{{mount.size_available / mount.size_total}}"
