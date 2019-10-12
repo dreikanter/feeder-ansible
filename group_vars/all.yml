@@ -13,7 +13,7 @@ timezone: UTC
 locale: en_US.UTF-8
 
 # See https://github.com/debops/ansible-swapfile
-swapfile__size: '{{ ((ansible_memtotal_mb|int * 2) if (ansible_memtotal_mb|int <= 2048) else "512") }}'
+swapfile__size: '{{((ansible_memtotal_mb|int * 2) if (ansible_memtotal_mb|int <= 2048) else "512")}}'
 swapfile__priority: '-1'
 swapfile__use_dd: False
 swapfile__files: [ '/swapfile' ]
@@ -21,9 +21,9 @@ swapfile__files: [ '/swapfile' ]
 # role: deploy-user
 
 deploy_user: deploy
-deploy_group: "{{ deploy_user }}"
-deploy_user_path: "/home/{{ deploy_user }}"
-authorized_public_keys: [ "{{ secrets_path }}/scaleway.pub" ]
+deploy_group: "{{deploy_user}}"
+deploy_user_path: "/home/{{deploy_user}}"
+authorized_public_keys: [ "{{secrets_path}}/scaleway.pub" ]
 
 # role: ruby
 
@@ -32,15 +32,15 @@ ruby_install_version: 0.7.0
 ruby_version: 2.6.3
 
 rbenv_repo: "git://github.com/sstephenson/rbenv.git"
-rbenv_root_path: "{{ deploy_user_path }}/.rbenv"
-rubies_path: "{{ rbenv_root_path }}/versions"
-ruby_path: "{{ rubies_path }}/{{ ruby_version }}"
+rbenv_root_path: "{{deploy_user_path}}/.rbenv"
+rubies_path: "{{rbenv_root_path}}/versions"
+ruby_path: "{{rubies_path}}/{{ruby_version}}"
 
 push_ruby_binaries: True
-local_ruby_path: "~/.rbenv/versions/{{ ruby_version }}"
+local_ruby_path: "~/.rbenv/versions/{{ruby_version}}"
 
-rbenv_bin: "{{ rbenv_root_path }}/bin/rbenv"
-bundle: "{{ rbenv_root_path }}/shims/bundle"
+rbenv_bin: "{{rbenv_root_path}}/bin/rbenv"
+bundle: "{{rbenv_root_path}}/shims/bundle"
 
 # role: nodejs
 
@@ -48,8 +48,8 @@ nodesource_url: https://deb.nodesource.com/setup_12.x
 
 # role: postgres
 
-postgres_user: "{{ app_name }}"
-postgres_password: "{{ app_name }}"
+postgres_user: "{{app_name}}"
+postgres_password: "{{app_name}}"
 
 #
 # playbook: deploy
@@ -60,23 +60,23 @@ git_branch: master
 git_key_file: None
 
 # NOTE: These paths should correspond to puma.rb
-app_root_path: "/var/www/{{ app_name }}"
-app_path:      "{{ app_root_path }}/current"
-shared_path:   "{{ app_root_path }}/shared"
-logs_path:     "{{ shared_path }}/log"
-pids_path:     "{{ shared_path }}/pids"
-sockets_path:  "{{ shared_path }}/sockets"
-releases_path: "{{ app_root_path }}/releases"
-repo_path:     "{{ app_root_path }}/repo"
+app_root_path: "/var/www/{{app_name}}"
+app_path:      "{{app_root_path}}/current"
+shared_path:   "{{app_root_path}}/shared"
+logs_path:     "{{shared_path}}/log"
+pids_path:     "{{shared_path}}/pids"
+sockets_path:  "{{shared_path}}/sockets"
+releases_path: "{{app_root_path}}/releases"
+repo_path:     "{{app_root_path}}/repo"
 
 local_source_path: "~/tmp/repo"
 dist_path: "~/tmp"
 
 # These paths should be common for Vagrant and CI
-credentials_master_key_path: "{{ secrets_path }}/master.key"
+credentials_master_key_path: "{{secrets_path}}/master.key"
 
-puma_config_file: "{{ app_path }}/config/puma.rb"
-puma_socket: "{{ sockets_path }}/puma.sock"
+puma_config_file: "{{app_path}}/config/puma.rb"
+puma_socket: "{{sockets_path}}/puma.sock"
 
 # role: letsenrypt
 

@@ -1,26 +1,26 @@
 ---
 - name: "check if chrome is installed"
-  command: "dpkg -s {{ google_chrome_package_name }}"
+  command: "dpkg -s {{google_chrome_package_name}}"
   register: chrome_check
   failed_when: chrome_check.rc > 1
   changed_when: chrome_check == 1
 
 - name: "download google-chrome-stable"
   get_url:
-    url: "{{ google_chrome_package_filename_url }}"
-    dest: "~/{{ google_chrome_package_name }}"
+    url: "{{google_chrome_package_filename_url}}"
+    dest: "~/{{google_chrome_package_name}}"
     force: yes
   when: chrome_check.rc == 1
 
 - name: "install google-chrome-stable"
   apt:
-    deb: "~/{{ google_chrome_package_name }}"
+    deb: "~/{{google_chrome_package_name}}"
   sudo: true
   when: chrome_check.rc == 1
 
 - name: "install dependencies"
   apt:
-    name: "{{ item }}"
+    name: "{{item}}"
     state: latest
     update_cache: true
   with_items:

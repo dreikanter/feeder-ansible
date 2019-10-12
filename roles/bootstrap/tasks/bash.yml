@@ -1,9 +1,9 @@
 - name: add prefix to the bash prompt
   become: yes
-  become_user: "{{ deploy_user }}"
+  become_user: "{{deploy_user}}"
   lineinfile:
-    dest: "{{ deploy_user_path }}/.bashrc"
-    line: "{{ item }}"
+    dest: "{{deploy_user_path}}/.bashrc"
+    line: "{{item}}"
     insertafter: EOF
     state: present
     create: yes

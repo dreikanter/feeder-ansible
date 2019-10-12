@@ -1,4 +1,4 @@
-# {{ ansible_managed }}
+# {{ansible_managed}}
 
 alias cl=clear
 alias ll='ls -al'

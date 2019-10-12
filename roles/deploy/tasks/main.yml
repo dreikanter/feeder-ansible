@@ -1,70 +1,70 @@
 ---
 - name: clone or update sources
   git:
-    repo: "{{ git_url }}"
-    dest: "{{ repo_path }}"
+    repo: "{{git_url}}"
+    dest: "{{repo_path}}"
     clone: yes
     update: yes
-    version: "{{ git_branch }}"
+    version: "{{git_branch}}"
     accept_hostkey: yes
-    key_file: "{{ git_key_file }}"
+    key_file: "{{git_key_file}}"
 
 - name: install gems
   args:
-    chdir: "{{ repo_path }}"
+    chdir: "{{repo_path}}"
   environment:
-    RAILS_ENV: "{{ rails_env }}"
-  shell: "{{ bundle }} install --deployment --without development test"
+    RAILS_ENV: "{{rails_env}}"
+  shell: "{{bundle}} install --deployment --without development test"
 
 - name: install npm packages
   yarn:
-    path: "{{ repo_path }}"
+    path: "{{repo_path}}"
 
 - name: push configuration key
   copy:
-    src: "{{ credentials_master_key_path }}"
-    dest: "{{ repo_path }}/config/master.key"
-    owner: "{{ deploy_user }}"
-    group: "{{ deploy_group }}"
+    src: "{{credentials_master_key_path}}"
+    dest: "{{repo_path}}/config/master.key"
+    owner: "{{deploy_user}}"
+    group: "{{deploy_group}}"
     mode: 0600
 
 - name: migrate db (run once)
   become: yes
-  become_user: "{{ deploy_user }}"
+  become_user: "{{deploy_user}}"
   run_once: yes
   args:
-    chdir: "{{ repo_path }}"
+    chdir: "{{repo_path}}"
   environment:
-    RAILS_ENV: "{{ rails_env }}"
-  shell: "{{ bundle }} exec rails db:migrate --trace"
+    RAILS_ENV: "{{rails_env}}"
+  shell: "{{bundle}} exec rails db:migrate --trace"
 
 - name: build webpack bundles
   args:
-    chdir: "{{ repo_path }}"
-  shell: "{{ bundle }} exec rails webpacker:clobber webpacker:compile"
+    chdir: "{{repo_path}}"
+  shell: "{{bundle}} exec rails webpacker:clobber webpacker:compile"
   environment:
-    RAILS_ENV: "{{ rails_env }}"
+    RAILS_ENV: "{{rails_env}}"
 
 - name: create directory for the new release
   become: yes
   file:
     state: directory
-    path: "{{ new_release_path }}"
-    owner: "{{ deploy_user }}"
-    group: "{{ deploy_group }}"
+    path: "{{new_release_path}}"
+    owner: "{{deploy_user}}"
+    group: "{{deploy_group}}"
     mode: 0755
 
 - name: push distribution
   become: yes
-  become_user: "{{ deploy_user }}"
-  shell: "rsync -a {{ repo_path }}/ {{ new_release_path }} --exclude .git --exclude node_modules"
+  become_user: "{{deploy_user}}"
+  shell: "rsync -a {{repo_path}}/ {{new_release_path}} --exclude .git --exclude node_modules"
 
 - name: link most recent release to "/var/www/app/current"
   become: yes
   file:
     state: link
-    src: "{{ new_release_path }}"
-    dest: "{{ app_path }}"
+    src: "{{new_release_path}}"
+    dest: "{{app_path}}"
     force: yes
-    owner: "{{ deploy_user }}"
-    group: "{{ deploy_group }}"
+    owner: "{{deploy_user}}"
+    group: "{{deploy_group}}"

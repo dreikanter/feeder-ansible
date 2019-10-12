@@ -2,7 +2,7 @@
 - name: download script to add installation source
   become: yes
   get_url:
-    url: "{{ nodesource_url }}"
+    url: "{{nodesource_url}}"
     dest: /tmp/nodesource_setup
     mode: 0666
 

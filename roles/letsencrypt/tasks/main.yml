@@ -6,7 +6,7 @@
 
 - name: "create letsencrypt directory"
   file:
-    name: "{{ letsencrypt_dir }}"
+    name: "{{letsencrypt_dir}}"
     state: "directory"
 
 - name: "install nginx site for letsencrypt requests"
@@ -22,7 +22,7 @@
 - name: "create letsencrypt certificate"
   shell: "certbot certonly --non-interactive --webroot --webroot-path /var/www/letsencrypt --email alex.musayev@gmail.com --agree-tos --domain frf.im"
   args:
-    creates: "/etc/letsencrypt/live/{{ letsencrypt_domain_name }}"
+    creates: "/etc/letsencrypt/live/{{letsencrypt_domain_name}}"
 
 - name: "generate dhparams"
   shell: "openssl dhparam -out /etc/nginx/dhparams.pem 2048"
