@@ -23,7 +23,7 @@
 - name: push configuration key
   copy:
     src: "{{credentials_master_key_path}}"
-    dest: "{{repo_path}}/config/master.key"
+    dest: "{{repo_path}}/config/production.key"
     owner: "{{deploy_user}}"
     group: "{{deploy_group}}"
     mode: 0600
