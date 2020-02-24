@@ -29,7 +29,7 @@
   args:
     creates: "/etc/nginx/dhparams.pem"
 
-- name: "add letsencrypt cronjob for cert renewal"
+- name: "add letsencrypt cron job for cert renewal"
   cron:
     name: "letsencrypt_renewal"
     special_time: "weekly"
