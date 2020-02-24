@@ -29,7 +29,7 @@ authorized_public_keys: [ "{{secrets_path}}/scaleway.pub" ]
 
 rbenv_version: master
 ruby_install_version: 0.7.0
-ruby_version: 2.6.3
+ruby_version: 2.7.0
 
 rbenv_repo: "git://github.com/sstephenson/rbenv.git"
 rbenv_root_path: "{{deploy_user_path}}/.rbenv"
