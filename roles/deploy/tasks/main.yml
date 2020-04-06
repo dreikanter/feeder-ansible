@@ -5,6 +5,7 @@
     dest: "{{repo_path}}"
     clone: yes
     update: yes
+    force: yes
     version: "{{git_branch}}"
     accept_hostkey: yes
     key_file: "{{git_key_file}}"
