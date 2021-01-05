@@ -3,9 +3,6 @@
 # playbook: provision
 #
 
-ansible_python_interpreter: "/usr/bin/python3"
-secrets_path: "~/Sources/feeder-ansible-secrets"
-
 # role: bootstrap
 
 app_name: feeder
@@ -71,9 +68,6 @@ repo_path:     "{{app_root_path}}/repo"
 
 local_source_path: "~/tmp/repo"
 dist_path: "~/tmp"
-
-# These paths should be common for Vagrant and CI
-credentials_master_key_path: "{{secrets_path}}/production.key"
 
 puma_config_file: "{{app_path}}/config/puma.rb"
 puma_socket: "{{sockets_path}}/puma.sock"
