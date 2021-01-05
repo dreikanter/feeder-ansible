@@ -23,7 +23,7 @@ swapfile__files: [ '/swapfile' ]
 deploy_user: deploy
 deploy_group: "{{deploy_user}}"
 deploy_user_path: "/home/{{deploy_user}}"
-authorized_public_keys: [ "{{secrets_path}}/scaleway.pub" ]
+authorized_public_keys: []
 
 # role: ruby
 
