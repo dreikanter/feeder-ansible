@@ -1,1 +1,1 @@
-ansible-playbook --inventory=inventory/production -vvvv ./provision.yml
+ansible-playbook --inventory=inventory/production -vvvv --private-key=~/.ssh/feeder ./provision.yml
