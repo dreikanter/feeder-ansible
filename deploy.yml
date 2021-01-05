@@ -33,7 +33,7 @@
   hosts: app
   roles:
     - deploy
-    - cronjobs
+    # - cronjobs
     - puma
     - delayed_job
 
