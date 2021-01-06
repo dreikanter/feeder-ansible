@@ -2,7 +2,7 @@
 - name: "cronjob to update the feeds"
   cron:
     name: "feeds"
-    minute: "*/5"
+    minute: "*/15"
     job: "cd {{app_path}} && RAILS_ENV=production {{bundle}} exec rails feeder:pull_stale"
 
 - name: "cronjob to clean the db"
