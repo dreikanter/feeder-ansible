@@ -35,7 +35,6 @@
     - deploy
     # - cronjobs
     - puma
-    - delayed_job
 
 # TODO: Delete old releases which are not linked to "/var/www/app/current"
 
