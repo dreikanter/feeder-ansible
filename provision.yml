@@ -9,5 +9,4 @@
     - ruby
     - letsencrypt
     - nginx
-    - yarn
     - chrome

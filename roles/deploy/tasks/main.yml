@@ -17,10 +17,6 @@
     RAILS_ENV: "{{rails_env}}"
   shell: "{{bundle}} install --deployment --without development test"
 
-- name: install npm packages
-  yarn:
-    path: "{{repo_path}}"
-
 - name: push configuration key
   copy:
     src: "{{credentials_master_key_path}}"
