@@ -39,13 +39,6 @@
     RAILS_ENV: "{{rails_env}}"
   shell: "{{bundle}} exec rails db:migrate --trace"
 
-- name: build webpack bundles
-  args:
-    chdir: "{{repo_path}}"
-  shell: "{{bundle}} exec rails webpacker:clobber webpacker:compile"
-  environment:
-    RAILS_ENV: "{{rails_env}}"
-
 - name: create directory for the new release
   become: yes
   file:
