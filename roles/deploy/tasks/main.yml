@@ -1,5 +1,7 @@
 ---
 - name: clone or update sources
+  become: yes
+  become_user: "{{deploy_user}}"
   git:
     repo: "{{git_url}}"
     dest: "{{repo_path}}"
@@ -51,6 +53,7 @@
 
 - name: link most recent release to "/var/www/app/current"
   become: yes
+  become_user: "{{deploy_user}}"
   file:
     state: link
     src: "{{new_release_path}}"
