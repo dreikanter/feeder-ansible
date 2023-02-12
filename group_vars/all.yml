@@ -4,7 +4,7 @@
 #
 
 ansible_python_interpreter: "/usr/bin/python3"
-secrets_path: "~/Sources/feeder-ansible-secrets"
+secrets_path: "~/src/feeder-ansible-secrets"
 
 # role: bootstrap
 
