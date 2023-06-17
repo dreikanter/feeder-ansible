@@ -5,6 +5,7 @@
     - bootstrap
     - deploy-user
     - postgres
+    - redis
     - nodejs
     - ruby
     - letsencrypt

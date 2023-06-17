@@ -1,0 +1,23 @@
+---
+- name: ensure redis is present
+  become: true
+  apt:
+    pkg: redis-server
+    state: latest
+
+- name: ensure redis is started
+  become: true
+  service:
+    name: redis-server
+    state: started
+    enabled: yes
+
+- name: ensure redis configuration
+  become: true
+  notify: redis restart
+  template:
+    src: redis.conf.j2
+    dest: /etc/redis/redis.conf
+    owner: root
+    group: root
+    mode: 0644
