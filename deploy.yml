@@ -21,8 +21,6 @@
         group: "{{deploy_group}}"
         mode: u=rwX,g=rX,o=rX
       with_items:
-        - "{{app_root_path}}"
-        - "{{shared_path}}"
         - "{{logs_path}}"
         - "{{pids_path}}"
         - "{{sockets_path}}"
