@@ -31,7 +31,6 @@
   hosts: app
   roles:
     - deploy
-    # - cronjobs
     - puma
 
 # TODO: Delete old releases which are not linked to "/var/www/app/current"
