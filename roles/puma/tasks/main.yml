@@ -1,47 +1,47 @@
 ---
-- name: create service unit
-  become: yes
-  template:
+- name: Create service unit
+  become: true
+  ansible.builtin.template:
     src: puma.service.j2
-    dest: "/etc/systemd/system/puma.service"
+    dest: /etc/systemd/system/puma.service
 
-- name: create service unit
-  become: yes
-  template:
+- name: Create service unit
+  become: true
+  ansible.builtin.template:
     src: puma.socket.j2
-    dest: "/etc/systemd/system/puma.socket"
+    dest: /etc/systemd/system/puma.socket
 
-- name: enable and start service
-  become: yes
-  systemd:
-    name: "puma"
-    daemon_reload: yes
+- name: Enable and start service
+  become: true
+  ansible.builtin.systemd:
+    name: puma
+    daemon_reload: true
     state: restarted
     enabled: true
 
-- name: enable logrotate config for puma
-  become: yes
-  template:
-    src: "logrotate.j2"
-    dest: "/etc/logrotate.d/puma"
+- name: Enable logrotate config for puma
+  become: true
+  ansible.builtin.template:
+    src: logrotate.j2
+    dest: /etc/logrotate.d/puma
 
-- name: ensure nginx site configuration present
-  become: yes
-  template:
-    src: "nginx-site.conf.j2"
-    dest: "/etc/nginx/sites-available/{{app_name}}"
+- name: Ensure nginx site configuration present
+  become: true
+  ansible.builtin.template:
+    src: nginx-site.conf.j2
+    dest: /etc/nginx/sites-available/{{app_name}}
     owner: root
     group: root
 
-- name: ensure nginx site configuration is enabled
-  become: yes
-  file:
-    src: "/etc/nginx/sites-available/{{app_name}}"
-    dest: "/etc/nginx/sites-enabled/{{app_name}}"
+- name: Ensure nginx site configuration is enabled
+  become: true
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/{{app_name}}
+    dest: /etc/nginx/sites-enabled/{{app_name}}
     state: link
 
-- name: restart nginx
-  become: yes
-  service:
+- name: Restart nginx
+  become: true
+  ansible.builtin.service:
     name: nginx
     state: reloaded

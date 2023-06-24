@@ -1,6 +1,6 @@
 ---
 - hosts: app
-  become: yes
+  become: true
   roles:
     - bootstrap
     - deploy-user
