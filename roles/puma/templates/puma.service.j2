@@ -9,7 +9,7 @@ Requires=puma.socket
 Type=simple
 User={{deploy_user}}
 WorkingDirectory={{app_path}}
-ExecStart=/bin/bash -lc "{{bundle}} exec puma -C {{puma_config_file}} --redirect-stdout {{logs_path}}/puma.stdout.log --redirect-stderr {{shared_path}}/log/puma.stderr.log"
+ExecStart=/bin/bash -lc "{{bundle}} exec puma -C {{app_path}}/config/puma.rb --redirect-stdout {{logs_path}}/puma.stdout.log --redirect-stderr {{shared_path}}/log/puma.stderr.log"
 Restart=always
 TimeoutSec=30
 

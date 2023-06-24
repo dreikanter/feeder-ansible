@@ -36,9 +36,6 @@ rbenv_root_path: "{{deploy_user_path}}/.rbenv"
 rubies_path: "{{rbenv_root_path}}/versions"
 ruby_path: "{{rubies_path}}/{{ruby_version}}"
 
-push_ruby_binaries: True
-local_ruby_path: "~/.rbenv/versions/{{ruby_version}}"
-
 rbenv_bin: "{{rbenv_root_path}}/bin/rbenv"
 bundle: "{{rbenv_root_path}}/shims/bundle"
 
@@ -77,5 +74,4 @@ repo_path:     "{{deployment_path}}/repo"
 # These paths should be common for Vagrant and CI
 credentials_master_key_path: "{{secrets_path}}/production.key"
 
-puma_config_file: "{{app_path}}/config/puma.rb"
 puma_socket: "{{sockets_path}}/puma.sock"
