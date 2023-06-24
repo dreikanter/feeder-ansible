@@ -64,14 +64,11 @@ git_key_file: None
 
 deployment_path: "/var/www/feeder"
 
-app_path:      "{{deployment_path}}/current"
-logs_path:     "{{deployment_path}}/log"
-pids_path:     "{{deployment_path}}/pids"
-sockets_path:  "{{deployment_path}}/sockets"
+app_path: "{{deployment_path}}/current"
+logs_path: "{{deployment_path}}/log"
+pids_path: "{{deployment_path}}/pids"
+sockets_path: "{{deployment_path}}/sockets"
 releases_path: "{{deployment_path}}/releases"
-repo_path:     "{{deployment_path}}/repo"
-
-# These paths should be common for Vagrant and CI
-credentials_master_key_path: "{{secrets_path}}/production.key"
+repo_path: "{{deployment_path}}/repo"
 
 puma_socket: "{{sockets_path}}/puma.sock"

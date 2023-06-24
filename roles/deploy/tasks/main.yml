@@ -21,7 +21,7 @@
   ansible.builtin.shell: "{{bundle}} install --deployment --without development test"
 - name: Push configuration key
   ansible.builtin.copy:
-    src: "{{credentials_master_key_path}}"
+    content: "{{lookup('env', 'FEEDER_CREDENTIALS_MASTER_KEY')}}"
     dest: "{{repo_path}}/config/credentials/production.key"
     owner: "{{deploy_user}}"
     group: "{{deploy_group}}"
