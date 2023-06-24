@@ -63,10 +63,10 @@
     owner: "{{deploy_user}}"
     group: "{{deploy_group}}"
 
-- name: notify honeybadger.io about the deployment
-  community.general.honeybadger_deployment:
-    token: "{{lookup('env', 'HONEYBADGER_TOKEN')}}"
-    environment: "production"
-    user: "ansible"
-    revision: "{{git_result.after}}"
-    repo: "{{git_url}}"
+# - name: notify honeybadger.io about the deployment
+#   community.general.honeybadger_deployment:
+#     token: "{{lookup('env', 'HONEYBADGER_TOKEN')}}"
+#     environment: "production"
+#     user: "ansible"
+#     revision: "{{git_result.after}}"
+#     repo: "{{git_url}}"
