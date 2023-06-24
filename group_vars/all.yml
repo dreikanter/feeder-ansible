@@ -51,6 +51,12 @@ nodesource_url: https://deb.nodesource.com/setup_12.x
 postgres_user: "{{app_name}}"
 postgres_password: "{{app_name}}"
 
+# role: letsenrypt
+
+letsencrypt_email: alex.musayev@gmail.com
+letsencrypt_dir: /var/www/letsencrypt
+letsencrypt_domain_name: frf.im
+
 #
 # playbook: deploy
 #
@@ -73,9 +79,3 @@ credentials_master_key_path: "{{secrets_path}}/production.key"
 
 puma_config_file: "{{app_path}}/config/puma.rb"
 puma_socket: "{{sockets_path}}/puma.sock"
-
-# role: letsenrypt
-
-letsencrypt_email: alex.musayev@gmail.com
-letsencrypt_dir: /var/www/letsencrypt
-letsencrypt_domain_name: frf.im
