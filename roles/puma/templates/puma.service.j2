@@ -14,7 +14,7 @@ Restart=always
 TimeoutSec=30
 
 Environment=PUMA_DEBUG=1
-Environment=RAILS_ENV=production
+Environment=RAILS_ENV={{lookup('env', 'RAILS_ENV')}}
 Environment=PUMA_SOCKET_PATH={{puma_socket}}
 Environment=PUMA_PID_PATH={{pids_path}}/puma.pid
 Environment=PUMA_STATE_PATH={{pids_path}}/puma.state

@@ -17,7 +17,7 @@
   args:
     chdir: "{{repo_path}}"
   environment:
-    RAILS_ENV: "{{rails_env}}"
+    RAILS_ENV: "{{lookup('env', 'RAILS_ENV')}}"
   ansible.builtin.shell: "{{bundle}} install --deployment --without development test"
 - name: Push configuration key
   ansible.builtin.copy:
@@ -34,7 +34,7 @@
   args:
     chdir: "{{repo_path}}"
   environment:
-    RAILS_ENV: "{{rails_env}}"
+    RAILS_ENV: "{{lookup('env', 'RAILS_ENV')}}"
   ansible.builtin.shell: "{{bundle}} exec rails db:migrate --trace"
 - name: Create directory for the new release
   become: true
