@@ -1,11 +1,46 @@
 ---
-- include: ansible_dependencies.yml
+# - name: install ansible dependencies
+#   apt:
+#     name: aptitude
+#     state: present
+#     update_cache: yes
 
 - name: safe upgrade packages
   apt:
     update_cache: yes
     upgrade: safe
 
-- include: swapfile.yml
-- include: tools.yml
-# - include: locale.yml
+- name: install packages
+  apt:
+    name: "{{item}}"
+    state: latest
+    update_cache: true
+  with_items:
+    - build-essential
+    - curl
+    - git-core
+    - htop
+    - libcurl4-openssl-dev
+    - libffi-dev
+    - libreadline-dev
+    - libsqlite3-dev
+    - libssl-dev
+    - libxml2-dev
+    - libxslt1-dev
+    - libyaml-dev
+    - vim
+    - wget
+    - zlib1g-dev
+
+- name: "test if linger is enabled for deployment user"
+  become: yes
+  shell: "loginctl show-user {{deploy_user}}"
+  changed_when: false
+  failed_when: "{{'command not found' in systemd_linger_enabled_test.stderr}}"
+  register: systemd_linger_enabled_test
+
+- name: "enable linger for deployment user"
+  become: yes
+  shell: "loginctl enable-linger {{deploy_user}}"
+  changed_when: true
+  when: "{{'Failed' in systemd_linger_enabled_test.stderr}}"
