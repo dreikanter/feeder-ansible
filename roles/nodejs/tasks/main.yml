@@ -1,5 +1,5 @@
 ---
-- name: download script to add installation source
+- name: download setup script
   become: yes
   get_url:
     url: "{{nodesource_url}}"

@@ -38,7 +38,7 @@ bundle: "{{rbenv_root_path}}/shims/bundle"
 
 # role: nodejs
 
-nodesource_url: https://deb.nodesource.com/setup_12.x
+nodesource_url: https://deb.nodesource.com/setup_current.x
 
 # role: postgres
 
