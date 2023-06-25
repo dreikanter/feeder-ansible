@@ -4,10 +4,10 @@ postgres_user: sample
 postgres_password: sample
 postgresql_admin_user: postgres
 
-postgres_conf_directory: "/etc/postgresql/{{postgres_version}}/main"
+postgres_conf_directory: /etc/postgresql/{{postgres_version}}/main
 postgres_hba_file: "{{postgres_conf_directory}}/pg_hba.conf"
 
 postgres_extensions:
   - hstore
 
-ansible_distribution_release: "kinetic"
+ansible_distribution_release: kinetic

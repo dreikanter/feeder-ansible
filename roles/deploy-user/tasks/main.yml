@@ -9,7 +9,7 @@
     group: "{{deploy_group}}"
     state: present
     shell: /bin/bash
-    generate_ssh_key: yes
+    generate_ssh_key: true
 
 - name: add deploy user to sudoers
   lineinfile:
@@ -29,26 +29,26 @@
 - name: disallow password authentication
   lineinfile:
     dest: /etc/ssh/sshd_config
-    regexp: "^PasswordAuthentication"
-    line: "PasswordAuthentication no"
+    regexp: ^PasswordAuthentication
+    line: PasswordAuthentication no
     state: present
   notify: restart sshd
 
 - name: set bash aliases
   template:
-    src: "aliases.sh"
-    dest: "/etc/profile.d/aliases.sh"
-    owner: "root"
-    group: "root"
-    mode: 0644
+    src: aliases.sh
+    dest: /etc/profile.d/aliases.sh
+    owner: root
+    group: root
+    mode: "0644"
 
 - name: test if linger is enabled
-  shell: "loginctl show-user {{deploy_user}}"
+  shell: loginctl show-user {{deploy_user}}
   changed_when: false
   failed_when: "{{'command not found' in systemd_linger_enabled_test.stderr}}"
   register: systemd_linger_enabled_test
 
 - name: enabled linger
-  shell: "loginctl enable-linger {{deploy_user}}"
+  shell: loginctl enable-linger {{deploy_user}}
   changed_when: true
   when: "{{'Failed' in systemd_linger_enabled_test.stderr}}"

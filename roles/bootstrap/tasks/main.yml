@@ -1,7 +1,7 @@
 ---
 - name: safe upgrade packages
   apt:
-    update_cache: yes
+    update_cache: true
     upgrade: safe
 
 - name: install packages

@@ -1,19 +1,19 @@
 ---
 - name: install nginx
-  become: yes
+  become: true
   apt:
     name: nginx
     state: latest
 
 - name: disable default config
-  become: yes
+  become: true
   file:
     path: /etc/nginx/sites-enabled/default
     state: absent
 
 - name: restart nginx
-  become: yes
+  become: true
   service:
     name: nginx
     state: restarted
-    enabled: yes
+    enabled: true
