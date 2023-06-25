@@ -30,9 +30,9 @@
   become_user: "{{deploy_user}}"
   shell: "{{rbenv_bin}} global {{ruby_version}} && {{rbenv_bin}} rehash"
 
-- name: install bundler
-  become: yes
-  become_user: "{{deploy_user}}"
-  shell: "{{rbenv_root_path}}/shims/gem install bundler"
-  args:
-    creates: "{{rbenv_root_path}}/shims/bundle"
+# - name: install bundler
+#   become: yes
+#   become_user: "{{deploy_user}}"
+#   shell: "{{rbenv_root_path}}/shims/gem install bundler"
+#   args:
+#     creates: "{{rbenv_root_path}}/shims/bundle"
