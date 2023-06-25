@@ -1,5 +1,5 @@
 ---
-postgres_version: 9.6
+postgres_version: 15.3
 postgres_user: sample
 postgres_password: sample
 postgresql_admin_user: postgres
@@ -10,5 +10,4 @@ postgres_hba_file: "{{postgres_conf_directory}}/pg_hba.conf"
 postgres_extensions:
   - hstore
 
-# NOTE: Assuming this is Ubuntu 16.04
-ansible_distribution_release: "xenial"
+ansible_distribution_release: "kinetic"
