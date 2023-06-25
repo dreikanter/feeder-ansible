@@ -8,6 +8,10 @@
     - redis
     - nodejs
     - ruby
-    - letsencrypt
     - nginx
-    - chrome
+
+    # should be ran after nginx is installed; configured domain shouls
+    # point to the server
+    # - letsencrypt
+
+    # - chrome
