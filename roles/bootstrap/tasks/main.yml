@@ -1,6 +1,5 @@
 ---
 - include: ansible_dependencies.yml
-- include: bash.yml
 
 - name: safe upgrade packages
   apt:
