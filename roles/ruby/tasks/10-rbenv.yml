@@ -2,7 +2,7 @@
 - name: install rbenv
   become: yes
   become_user: "{{ deploy_user }}"
-  git:
+  ansible.builtin.git:
     repo: "{{ rbenv_repo }}"
     dest: "{{ rbenv_root_path }}"
     accept_hostkey: yes
@@ -13,7 +13,7 @@
 - name: add rbenv init to .bashrc
   become: yes
   become_user: "{{ deploy_user }}"
-  blockinfile:
+  ansible.builtin.blockinfile:
     path: "{{ deploy_user_path }}/.bashrc"
     create: true
     backup: yes
@@ -24,7 +24,7 @@
 - name: create or update .gemrc
   become: yes
   become_user: "{{ deploy_user }}"
-  blockinfile:
+  ansible.builtin.blockinfile:
     path: "{{ deploy_user_path }}/.gemrc"
     create: true
     backup: yes

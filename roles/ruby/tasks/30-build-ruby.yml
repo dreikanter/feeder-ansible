@@ -12,7 +12,7 @@
 - name: check if ruby is installed
   become: yes
   become_user: "{{ deploy_user }}"
-  shell: "~/.rbenv/bin/rbenv versions | grep -Fq {{ ruby_version }}"
+  ansible.builtin.command: "~/.rbenv/bin/rbenv versions | grep -Fq {{ ruby_version }}"
   register: ruby_version_installed
   ignore_errors: yes
 
@@ -22,10 +22,10 @@
 - name: install ruby from sources
   become: yes
   become_user: "{{ deploy_user }}"
-  shell: ruby-install --install-dir {{ ruby_path }} ruby {{ ruby_version }} -- --disable-install-rdoc
+  ansible.builtin.command: ruby-install --install-dir {{ ruby_path }} ruby {{ ruby_version }} -- --disable-install-rdoc
   when: ruby_is_not_installed
 
 - name: rehash rbenv
   become: yes
   become_user: "{{ deploy_user }}"
-  shell: "{{ rbenv_bin }} global {{ ruby_version }} && {{ rbenv_bin }} rehash"
+  ansible.builtin.command: "{{ rbenv_bin }} global {{ ruby_version }} && {{ rbenv_bin }} rehash"
