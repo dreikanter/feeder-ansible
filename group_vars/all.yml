@@ -9,8 +9,6 @@ secrets_path: "~/src/feeder-ansible-secrets"
 # role: bootstrap
 
 app_name: feeder
-timezone: UTC
-locale: en_US.UTF-8
 
 # See https://github.com/debops/ansible-swapfile
 swapfile__size: '{{((ansible_memtotal_mb|int * 2) if (ansible_memtotal_mb|int <= 2048) else "512")}}'
