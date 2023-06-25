@@ -1,10 +1,4 @@
 ---
-# - name: install ansible dependencies
-#   apt:
-#     name: aptitude
-#     state: present
-#     update_cache: yes
-
 - name: safe upgrade packages
   apt:
     update_cache: yes
