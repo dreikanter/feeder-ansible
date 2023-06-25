@@ -20,7 +20,6 @@
     - "libpq-dev"
     - "postgresql-{{postgres_version}}"
     - "postgresql-contrib-{{postgres_version}}"
-    - "postgresql-{{postgres_version}}-postgis-{{postgres_postgis_version}}"
 
 - name: install psycopg2 for ansible postgresql_user module
   become: true
