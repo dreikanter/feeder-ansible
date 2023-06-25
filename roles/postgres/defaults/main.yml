@@ -1,5 +1,5 @@
 ---
-postgres_version: 15.3
+postgres_version: 15
 postgres_user: sample
 postgres_password: sample
 postgresql_admin_user: postgres
