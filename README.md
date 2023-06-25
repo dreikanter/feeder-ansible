@@ -1,24 +1,20 @@
 # Ansible automation for Rails
 
-Ansible-based provisioning and deployement automation for Rails project. Compatible with:
+Ansible-based provisioning and deployement automation for Rails project.
 
-- Ubuntu 18.04 x64
-- Ansible 2.6
+Compatible with:
+
+- Ubuntu 22.04 x64
+- Ansible 2.15
 
 Provision production:
 
-```
-bash ./provision_production.sh
-```
-
-Deploy to production:
-
-```
-bash ./deploy_production.sh
+```sh
+./provision_production.sh
 ```
 
-SSH connection test:
+Deploy feeder to production:
 
-```
-ansible all -i inventory/production -u root -m ping
+```sh
+./deploy_production.sh
 ```
