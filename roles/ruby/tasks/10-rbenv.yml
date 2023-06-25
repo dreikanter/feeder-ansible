@@ -24,12 +24,10 @@
 
 - name: create or update .gemrc
   become: yes
-  become_user: "{{deploy_user}}"
+  become_user: "{{ deploy_user }}"
   blockinfile:
-    path: "{{deploy_user_path}}/.gemrc"
+    path: "{{ deploy_user_path }}/.gemrc"
     backup: yes
-    # owner: "{{deploy_user}}"
-    # group: "{{deploy_group}}"
     mode: 0600
     block: |
       :sources:

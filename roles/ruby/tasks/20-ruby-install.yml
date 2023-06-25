@@ -2,22 +2,22 @@
 - name: check if ruby-install is already installed
   become: yes
   stat:
-    path: /usr/local/share/doc/ruby-install-{{ruby_install_version}}
+    path: /usr/local/share/doc/ruby-install-{{ ruby_install_version }}
   register: ruby_install_path
 
 - name: download ruby-install
   become: yes
   when: ruby_install_path.stat.exists == false
   unarchive:
-    src: "https://github.com/postmodern/ruby-install/archive/v{{ruby_install_version}}.tar.gz"
+    src: "https://github.com/postmodern/ruby-install/archive/v{{ ruby_install_version }}.tar.gz"
     remote_src: yes
-    dest: "{{deploy_user_path}}"
-    owner: "{{deploy_user}}"
-    group: "{{deploy_group}}"
+    dest: "{{ deploy_user_path }}"
+    owner: "{{ deploy_user }}"
+    group: "{{ deploy_group }}"
 
 - name: install ruby-install
   become: yes
   when: ruby_install_path.stat.exists == false
   make:
-    chdir: "{{deploy_user_path}}/ruby-install-{{ruby_install_version}}"
+    chdir: "{{ deploy_user_path }}/ruby-install-{{ ruby_install_version }}"
     target: install

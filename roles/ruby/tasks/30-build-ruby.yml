@@ -1,38 +1,31 @@
 ---
 - name: ensure rubies directory exists
   become: yes
-  become_user: "{{deploy_user}}"
+  become_user: "{{ deploy_user }}"
   file:
-    path: "{{rubies_path}}"
+    path: "{{ rubies_path }}"
     state: directory
     mode: 0755
-    owner: "{{deploy_user}}"
-    group: "{{deploy_user}}"
+    owner: "{{ deploy_user }}"
+    group: "{{ deploy_user }}"
 
 - name: check if ruby is installed
   become: yes
-  become_user: "{{deploy_user}}"
-  shell: "~/.rbenv/bin/rbenv versions | grep -Fq {{ruby_version}}"
+  become_user: "{{ deploy_user }}"
+  shell: "~/.rbenv/bin/rbenv versions | grep -Fq {{ ruby_version }}"
   register: ruby_version_installed
   ignore_errors: yes
 
 - set_fact:
-    ruby_is_not_installed: "{{ruby_version_installed | failed}}"
+    ruby_is_not_installed: "{{ ruby_version_installed | failed }}"
 
 - name: install ruby from sources
   become: yes
-  become_user: "{{deploy_user}}"
-  shell: ruby-install --install-dir {{ruby_path}} ruby {{ruby_version}} -- --disable-install-rdoc
+  become_user: "{{ deploy_user }}"
+  shell: ruby-install --install-dir {{ ruby_path }} ruby {{ ruby_version }} -- --disable-install-rdoc
   when: ruby_is_not_installed
 
 - name: rehash rbenv
   become: yes
-  become_user: "{{deploy_user}}"
-  shell: "{{rbenv_bin}} global {{ruby_version}} && {{rbenv_bin}} rehash"
-
-# - name: install bundler
-#   become: yes
-#   become_user: "{{deploy_user}}"
-#   shell: "{{rbenv_root_path}}/shims/gem install bundler"
-#   args:
-#     creates: "{{rbenv_root_path}}/shims/bundle"
+  become_user: "{{ deploy_user }}"
+  shell: "{{ rbenv_bin }} global {{ ruby_version }} && {{ rbenv_bin }} rehash"
