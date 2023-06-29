@@ -10,7 +10,7 @@
   service:
     name: redis-server
     state: started
-    enabled: yes
+    enabled: true
 
 - name: ensure redis configuration
   become: true
@@ -20,4 +20,4 @@
     dest: /etc/redis/redis.conf
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"

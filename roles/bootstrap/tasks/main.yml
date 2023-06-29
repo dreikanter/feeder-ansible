@@ -1,12 +1,27 @@
 ---
-- include: ansible_dependencies.yml
-- include: bash.yml
-
 - name: safe upgrade packages
   apt:
-    update_cache: yes
+    update_cache: true
     upgrade: safe
 
-- include: swapfile.yml
-- include: tools.yml
-# - include: locale.yml
+- name: install packages
+  apt:
+    name: "{{item}}"
+    state: latest
+    update_cache: true
+  with_items:
+    - build-essential
+    - curl
+    - git-core
+    - htop
+    - libcurl4-openssl-dev
+    - libffi-dev
+    - libreadline-dev
+    - libsqlite3-dev
+    - libssl-dev
+    - libxml2-dev
+    - libxslt1-dev
+    - libyaml-dev
+    - vim
+    - wget
+    - zlib1g-dev

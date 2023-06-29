@@ -1,1 +1,1 @@
-ansible-playbook --inventory=inventory/production -vvvv ./provision.yml
+ansible-playbook ./provision.yml --inventory $FEEDER_PRODUCTION_HOST, -vvv

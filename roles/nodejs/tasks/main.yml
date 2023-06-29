@@ -1,17 +1,17 @@
 ---
-- name: download script to add installation source
-  become: yes
+- name: download setup script
+  become: true
   get_url:
     url: "{{nodesource_url}}"
     dest: /tmp/nodesource_setup
-    mode: 0666
+    mode: "0666"
 
 - name: add installation source
-  become: yes
+  become: true
   shell: cat /tmp/nodesource_setup | bash -E -
 
 - name: install nodejs
-  become: yes
+  become: true
   apt:
     name: nodejs
     state: present

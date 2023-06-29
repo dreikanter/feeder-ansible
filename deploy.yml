@@ -1,16 +1,19 @@
 ---
-- hosts: app
+- name: Deploy aplication
+  hosts: all
   gather_facts: false
   run_once: true
   tasks:
+    # Move to deploy role
     - ansible.builtin.set_fact:
         new_release_name: "{{app_name}}-{{lookup('pipe', 'date -u +%Y%m%d%H%M%S')}}"
 
+    # Move to deploy role
     - ansible.builtin.set_fact:
         new_release_path: "{{releases_path}}/{{new_release_name}}"
 
 - name: Ensure directories structure exists
-  hosts: app
+  hosts: all
   gather_facts: false
   tasks:
     - become: true
@@ -21,8 +24,6 @@
         group: "{{deploy_group}}"
         mode: u=rwX,g=rX,o=rX
       with_items:
-        - "{{app_root_path}}"
-        - "{{shared_path}}"
         - "{{logs_path}}"
         - "{{pids_path}}"
         - "{{sockets_path}}"
@@ -30,15 +31,14 @@
         - "{{repo_path}}"
 
 - name: Deploy application
-  hosts: app
+  hosts: all
   roles:
     - deploy
-    # - cronjobs
     - puma
 
 # TODO: Delete old releases which are not linked to "/var/www/app/current"
 
-- hosts: app
+- hosts: all
   gather_facts: false
   run_once: true
   tasks:

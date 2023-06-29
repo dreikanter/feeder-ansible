@@ -1,1 +1,1 @@
-ansible-playbook --inventory=inventory/production -vvv ./deploy.yml
+ansible-playbook ./deploy.yml --inventory $FEEDER_PRODUCTION_HOST, -vvv

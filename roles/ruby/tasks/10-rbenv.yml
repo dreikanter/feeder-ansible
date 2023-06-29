@@ -1,34 +1,35 @@
 ---
 - name: install rbenv
-  become: yes
-  become_user: "{{deploy_user}}"
-  git:
-    repo: "{{rbenv_repo}}"
-    dest: "{{rbenv_root_path}}"
-    accept_hostkey: yes
-    version: "{{rbenv_version}}"
-    clone: yes
-    update: yes
+  become: true
+  become_user: "{{ deploy_user }}"
+  ansible.builtin.git:
+    repo: "{{ rbenv_repo }}"
+    dest: "{{ rbenv_root_path }}"
+    accept_hostkey: true
+    version: "{{ rbenv_version }}"
+    clone: true
+    update: true
 
-- name: source rbenv bash file in .bashrc
-  become: yes
-  become_user: "{{deploy_user}}"
-  lineinfile:
-    dest: "{{deploy_user_path}}/.bashrc"
-    line: "{{item}}"
-    insertafter: EOF
-    state: present
-    create: yes
-  with_items:
-    - "export PATH=\"$HOME/.rbenv/bin:$PATH\""
-    - "eval \"$(rbenv init -)\""
+- name: add rbenv init to .bashrc
+  become: true
+  become_user: "{{ deploy_user }}"
+  ansible.builtin.blockinfile:
+    path: "{{ deploy_user_path }}/.bashrc"
+    create: true
+    backup: true
+    block: |
+      export PATH="$HOME/.rbenv/bin:$PATH"
+      eval "$(rbenv init -)"
 
-- name: gemrc
-  become: yes
-  become_user: "{{deploy_user}}"
-  copy:
-    src: "gemrc"
-    dest: "{{deploy_user_path}}/.gemrc"
-    owner: "{{deploy_user}}"
-    group: "{{deploy_group}}"
-    mode: 0600
+- name: create or update .gemrc
+  become: true
+  become_user: "{{ deploy_user }}"
+  ansible.builtin.blockinfile:
+    path: "{{ deploy_user_path }}/.gemrc"
+    create: true
+    backup: true
+    mode: "0600"
+    block: |
+      :sources:
+      - https://rubygems.org
+      gem: --no-ri --no-rdoc

@@ -9,12 +9,12 @@ Requires=puma.socket
 Type=simple
 User={{deploy_user}}
 WorkingDirectory={{app_path}}
-ExecStart=/bin/bash -lc "{{bundle}} exec puma -C {{puma_config_file}} --redirect-stdout {{shared_path}}/log/puma.stdout.log --redirect-stderr {{shared_path}}/log/puma.stderr.log"
+ExecStart=/bin/bash -lc "{{bundle}} exec puma -C {{app_path}}/config/puma.rb --redirect-stdout {{logs_path}}/puma.stdout.log --redirect-stderr {{logs_path}}/puma.stderr.log"
 Restart=always
 TimeoutSec=30
 
 Environment=PUMA_DEBUG=1
-Environment=RAILS_ENV=production
+Environment=RAILS_ENV={{lookup('env', 'RAILS_ENV')}}
 Environment=PUMA_SOCKET_PATH={{puma_socket}}
 Environment=PUMA_PID_PATH={{pids_path}}/puma.pid
 Environment=PUMA_STATE_PATH={{pids_path}}/puma.state
