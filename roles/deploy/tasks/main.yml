@@ -19,6 +19,7 @@
   environment:
     RAILS_ENV: "{{rails_env}}"
   ansible.builtin.shell: "{{bundle}} install --deployment --without development test"
+
 - name: Push configuration key
   ansible.builtin.copy:
     src: "{{credentials_master_key_path}}"
@@ -35,7 +36,8 @@
     chdir: "{{repo_path}}"
   environment:
     RAILS_ENV: "{{rails_env}}"
-  ansible.builtin.shell: "{{bundle}} exec rails db:migrate --trace"
+  ansible.builtin.shell: ". /etc/profile.d/feeder.sh && env && {{bundle}} exec rails db:migrate --trace"
+
 - name: Create directory for the new release
   become: true
   ansible.builtin.file:
@@ -49,6 +51,7 @@
   become: true
   become_user: "{{deploy_user}}"
   ansible.builtin.shell: rsync -a {{repo_path}}/ {{new_release_path}} --exclude .git --exclude node_modules
+
 - name: Link most recent release to "/var/www/app/current"
   become: true
   become_user: "{{deploy_user}}"
