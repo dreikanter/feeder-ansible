@@ -39,7 +39,7 @@
 # TODO: Delete old releases which are not linked to "/var/www/app/current"
 
 - hosts: app
-  gather_facts: false
+  gather_facts: true
   run_once: true
   tasks:
     - name: Report distrib size
@@ -61,9 +61,9 @@
 
     - name: Check free space threshold
       ansible.builtin.assert:
-        that: "{{available}} > 0.1"
-        fail_msg: low disk space!
-        success_msg: disk space is enough
+        that: "{{ (available | float) > 0.1 }}"
+        fail_msg: "Low disk space! Only {{ (available | float * 100) | round(2) }}% available."
+        success_msg: "Disk space is sufficient. {{ (available | float * 100) | round(2) }}% available."
         quiet: true
       vars:
         mount: "{{ansible_mounts | selectattr('mount', 'equalto', '/') | list | first}}"
