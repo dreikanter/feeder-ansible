@@ -97,15 +97,8 @@
   with_items: "{{postgres_extensions}}"
   when: "{{postgres_extensions}}"
 
-- name: install pip3 for for ansible pip module
-  become: true
-  apt:
-    name: "{{item}}"
-    state: latest
-  with_items:
-    - python3-pip
-
 - name: install pgcli
   become: yes
-  pip:
+  apt:
     name: pgcli
+    state: present
