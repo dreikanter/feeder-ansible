@@ -1,14 +1,24 @@
 ---
-- name: add apt repository key
+- name: ensure /etc/apt/keyrings exists
   become: yes
-  apt_key:
-    id: ACCC4CF8
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: "0755"
+
+- name: add postgres apt signing key
+  become: yes
+  ansible.builtin.get_url:
     url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    dest: /etc/apt/keyrings/pgdg.asc
+    mode: "0644"
 
 - name: add postgresql official apt repository
   become: yes
-  apt_repository:
-    repo: "deb http://apt.postgresql.org/pub/repos/apt/ {{ansible_distribution_release}}-pgdg main"
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/etc/apt/keyrings/pgdg.asc] http://apt.postgresql.org/pub/repos/apt/ {{ansible_distribution_release}}-pgdg main"
+    filename: pgdg
+    state: present
 
 - name: install postgres
   become: yes
@@ -20,7 +30,6 @@
     - "libpq-dev"
     - "postgresql-{{postgres_version}}"
     - "postgresql-contrib-{{postgres_version}}"
-    - "postgresql-{{postgres_version}}-postgis-{{postgres_postgis_version}}"
 
 - name: install psycopg2 for ansible postgresql_user module
   become: true
@@ -88,15 +97,8 @@
   with_items: "{{postgres_extensions}}"
   when: "{{postgres_extensions}}"
 
-- name: install pip3 for for ansible pip module
-  become: true
-  apt:
-    name: "{{item}}"
-    state: latest
-  with_items:
-    - python3-pip
-
 - name: install pgcli
   become: yes
-  pip:
+  apt:
     name: pgcli
+    state: present

@@ -8,6 +8,5 @@
     - redis
     - nodejs
     - ruby
-    - letsencrypt
     - nginx
-    - chrome
+    - letsencrypt

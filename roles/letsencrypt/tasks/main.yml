@@ -1,7 +1,7 @@
 ---
-- name: "install letsencrypt"
+- name: "install certbot"
   apt:
-    name: "letsencrypt"
+    name: "certbot"
     state: "latest"
 
 - name: "create letsencrypt directory"
