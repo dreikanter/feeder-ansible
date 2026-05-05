@@ -23,24 +23,14 @@ swapfile__files: [ '/swapfile' ]
 deploy_user: deploy
 deploy_group: "{{deploy_user}}"
 deploy_user_path: "/home/{{deploy_user}}"
-authorized_public_keys: [ "{{secrets_path}}/scaleway.pub" ]
+authorized_public_keys: [ "~/.ssh/feeder.pub" ]
 
 # role: ruby
 
-rbenv_version: v1.3.2
-ruby_install_version: 0.10.0
 ruby_version: 4.0.3
-
-rbenv_repo: "https://github.com/rbenv/rbenv.git"
-rbenv_root_path: "{{deploy_user_path}}/.rbenv"
-rubies_path: "{{rbenv_root_path}}/versions"
-ruby_path: "{{rubies_path}}/{{ruby_version}}"
-
-push_ruby_binaries: True
-local_ruby_path: "~/.rbenv/versions/{{ruby_version}}"
-
-rbenv_bin: "{{rbenv_root_path}}/bin/rbenv"
-bundle: "{{rbenv_root_path}}/shims/bundle"
+ruby_variant: jemalloc
+ruby_bin_path: "/usr/lib/fullstaq-ruby/versions/{{ruby_version}}-{{ruby_variant}}/bin"
+bundle: "{{ruby_bin_path}}/bundle"
 
 # role: nodejs
 

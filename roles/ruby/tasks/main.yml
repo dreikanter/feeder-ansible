@@ -1,4 +1,44 @@
 ---
-- import_tasks: 10-rbenv.yml
-- import_tasks: 20-ruby-install.yml
-- import_tasks: 30-build-ruby.yml
+- name: ensure /etc/apt/keyrings exists
+  become: yes
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: "0755"
+
+- name: add fullstaq-ruby signing key
+  become: yes
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/fullstaq-labs/fullstaq-ruby-server-edition/main/fullstaq-ruby.asc
+    dest: /etc/apt/keyrings/fullstaq-ruby.asc
+    mode: "0644"
+
+- name: add fullstaq-ruby apt repository
+  become: yes
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/etc/apt/keyrings/fullstaq-ruby.asc] https://apt.fullstaqruby.org/ ubuntu-{{ansible_distribution_version}} main"
+    filename: fullstaq-ruby
+    state: present
+
+- name: install fullstaq-ruby
+  become: yes
+  ansible.builtin.apt:
+    name: "fullstaq-ruby-{{ruby_version}}-{{ruby_variant}}"
+    state: present
+    update_cache: yes
+
+- name: copy gemrc
+  become: yes
+  become_user: "{{deploy_user}}"
+  ansible.builtin.copy:
+    src: gemrc
+    dest: "{{deploy_user_path}}/.gemrc"
+    owner: "{{deploy_user}}"
+    group: "{{deploy_group}}"
+    mode: "0600"
+
+- name: install bundler
+  become: yes
+  ansible.builtin.shell: "{{ruby_bin_path}}/gem install bundler --no-document"
+  args:
+    creates: "{{ruby_bin_path}}/bundle"

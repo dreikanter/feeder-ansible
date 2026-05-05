@@ -1,6 +1,5 @@
 ---
 - import_tasks: ansible_dependencies.yml
-- import_tasks: bash.yml
 
 - name: safe upgrade packages
   apt:
