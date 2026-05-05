@@ -8,4 +8,4 @@
     state: present
     create: yes
   with_items:
-    - "PS1='\e[31;mPROD\e[m ${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '"
+    - "PS1='\\e[31;mPROD\\e[m ${debian_chroot:+($debian_chroot)}\\u@\\h:\\w\\$ '"

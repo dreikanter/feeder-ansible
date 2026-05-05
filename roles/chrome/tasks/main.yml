@@ -15,7 +15,7 @@
 - name: "install google-chrome-stable"
   apt:
     deb: "~/{{google_chrome_package_name}}"
-  sudo: true
+  become: true
   when: chrome_check.rc == 1
 
 - name: "install dependencies"
@@ -24,10 +24,9 @@
     state: latest
     update_cache: true
   with_items:
-    - "libappindicator1"
     - "fonts-liberation"
 
 - name: "fix any missing chrome dependencies"
   shell: apt-get install -f
-  sudo: true
+  become: true
   when: chrome_check.rc == 1
