@@ -2,7 +2,6 @@
 postgres_version: 18
 postgres_user: sample
 postgres_password: sample
-postgres_postgis_version: 3
 postgresql_admin_user: postgres
 
 postgres_conf_directory: "/etc/postgresql/{{postgres_version}}/main"
