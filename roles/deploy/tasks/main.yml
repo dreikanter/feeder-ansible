@@ -13,12 +13,25 @@
     key_file: "{{git_key_file}}"
   register: git_result
 
-- name: Install gems
+- name: Configure Bundler for deployment
+  become: true
+  become_user: "{{deploy_user}}"
   args:
     chdir: "{{repo_path}}"
   environment:
     RAILS_ENV: "{{rails_env}}"
-  ansible.builtin.shell: "{{bundle}} install --deployment --without development test"
+  ansible.builtin.shell: |
+    {{bundle}} config set --local deployment true
+    {{bundle}} config set --local without 'development test'
+
+- name: Install gems
+  become: true
+  become_user: "{{deploy_user}}"
+  args:
+    chdir: "{{repo_path}}"
+  environment:
+    RAILS_ENV: "{{rails_env}}"
+  ansible.builtin.shell: "{{bundle}} install"
 
 - name: Push configuration key
   ansible.builtin.copy:
