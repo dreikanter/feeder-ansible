@@ -37,6 +37,16 @@
     group: "{{deploy_group}}"
     mode: "0600"
 
+- name: add fullstaq-ruby to PATH
+  become: yes
+  ansible.builtin.copy:
+    dest: /etc/profile.d/fullstaq-ruby.sh
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      export PATH="{{ruby_bin_path}}:$PATH"
+
 - name: install bundler
   become: yes
   ansible.builtin.shell: "{{ruby_bin_path}}/gem install bundler --no-document"
