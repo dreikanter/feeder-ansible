@@ -2,14 +2,6 @@
 
 Ansible playbooks for provisioning and deploying [feeder](https://github.com/dreikanter/feeder), a Rails application.
 
-Target environment:
-
-- Ubuntu 24.04 (Noble)
-- Ruby 4.0.3 (Fullstaq, jemalloc variant)
-- Node.js 24
-- PostgreSQL, Redis, Nginx, Let's Encrypt
-- Puma application server
-
 ## Prerequisites
 
 - Ansible installed locally
