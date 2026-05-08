@@ -1,24 +1,38 @@
-# Ansible automation for Rails
+# feeder-ansible
 
-Ansible-based provisioning and deployement automation for Rails project. Compatible with:
+Ansible playbooks for provisioning and deploying [feeder](https://github.com/dreikanter/feeder), a Rails application.
 
-- Ubuntu 18.04 x64
-- Ansible 2.6
+## Prerequisites
 
-Provision production:
+- Ansible installed locally
+- SSH key for the target host at `~/.ssh/feeder`
+- Secrets repository checked out at `~/src/feeder-ansible-secrets` (must contain `production.key` for Rails credentials)
+- Target host listed in `inventory/production`
+
+## Usage
+
+Test SSH connectivity:
+
+```
+ansible all -i inventory/production -u root -m ping
+```
+
+Provision the host (installs system packages, creates the deploy user, and configures PostgreSQL, Redis, Node.js, Ruby, Nginx, and Let's Encrypt):
 
 ```
 bash ./provision_production.sh
 ```
 
-Deploy to production:
+Deploy the application (checks out the configured branch, builds a release, and reloads Puma):
 
 ```
 bash ./deploy_production.sh
 ```
 
-SSH connection test:
+## Layout
 
-```
-ansible all -i inventory/production -u root -m ping
-```
+- `provision.yml` — provisioning playbook (`bootstrap`, `deploy-user`, `postgres`, `redis`, `nodejs`, `ruby`, `nginx`, `letsencrypt` roles)
+- `deploy.yml` — deployment playbook (`deploy`, `puma` roles)
+- `group_vars/all.yml` — shared variables (app name, paths, versions, repository URL, branch)
+- `inventory/production` — production inventory
+- `roles/` — role definitions
